@@ -7,6 +7,7 @@ Opto-driven MOSFET gates, a high-side arm switch, and battery / armed-rail sensi
 |---|---|
 | `kicad/` | KiCad PCB, the scripts that build and route it, DRC report, SPICE simulation |
 | `gerber/` | Gerber and drill files for JLCPCB (2-layer) |
+| `pcb-3d/` | 3D view of the PCB (`index.html`, open in a browser; needs internet for three.js) |
 | `veroboard/` | Veroboard wiring layout (`index.html`, open in a browser) and schematic (`torpedo_driver_v3_schematic.svg`) |
 
 GPIO map: GPIO1 fires SOL1, GPIO0 fires SOL2, GPIO10 arms, GPIO3 reads VBAT/11, GPIO4 reads VSW/11.
