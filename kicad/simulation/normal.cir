@@ -1,0 +1,122 @@
+* torpedo driver v3 - generated from the PCB file
+.param VB=16.8 LSOL=30m
+
+.model D1N5819 D(Is=31.7u Rs=0.051 N=1.373 Cjo=110p M=0.35 Eg=0.69 Xti=2 BV=40 IBV=1m)
+.model DTVS D(Is=1e-12 Rs=0.3 N=1.5 BV=20 IBV=1m Cjo=500p)
+.model DZ12 D(Is=1e-14 Rs=8 N=1 BV=12 IBV=5m Cjo=50p)
+.model DLED D(Is=1e-19 N=1.6 Rs=5)
+.model NLZ44 NMOS(Level=1 Vto=1.5 Kp=10 Lambda=0.002 Rd=0.006 Rs=0.004)
+.model PF4905 PMOS(Level=1 Vto=-3 Kp=12 Lambda=0.002 Rd=0.005 Rs=0.003)
+.model DBODY D(Is=1e-12 Rs=0.01 BV=55)
+.subckt PC817 a k c e CTR=1
+Dled a m DOPTO
+Vs m k 0
+Fph c b Vs {CTR/200}
+Qp c b e QOPTO
+Rbe b e 200meg
+.model DOPTO D(Is=8.4e-13 N=2 Rs=2 Cjo=30p)
+.model QOPTO NPN(Is=1e-14 Bf=200 Vaf=100 Cjc=15p Cje=10p Tf=5n)
+.ends
+
+C1 vbat c1m 470u IC={VB}
+RC1 c1m 0 0.08
+C3 vsense 0 100n
+C4 vg 0 100n
+C5 swsense 0 100n
+D1 d1n vsw D1N5819
+D2 d2n vsw D1N5819
+D3 n5v_in p5v D1N5819
+D4 0 vbat DTVS
+D5 0 vg DZ12
+RF1 vbat_in vbat 0.03
+VBAT bat 0 {VB}
+Rbat bat nb1 0.03
+Lwire nb1 vbat_in 0.5u
+Lsol1 d1n sm1 {LSOL}
+Rsol1 sm1 vsw 15
+Lsol2 vsw sm2 {LSOL}
+Rsol2 sm2 d2n 15
+Vbuck buck 0 5.1
+Rbuck buck n5v_in 0.1
+DLED1 led1a d1n DLED
+DLED2 led2a d2n DLED
+MQ1 d1n g1 0 0 NLZ44
+DbQ1 0 d1n DBODY
+CgsQ1 g1 0 1.5n
+CgdQ1 g1 d1n 0.2n
+MQ2 d2n g2 0 0 NLZ44
+DbQ2 0 d2n DBODY
+CgsQ2 g2 0 1.5n
+CgdQ2 g2 d2n 0.2n
+MQ3 vsw g3 vbat vbat PF4905
+DbQ3 vsw vbat DBODY
+CgsQ3 g3 vbat 3n
+CgdQ3 g3 vsw 0.6n
+R1 fire1 ol1 220
+R10 vsw swsense 22000
+R11 swsense 0 2200
+R12 vbat vsw 15000
+R13 vbat g3 4700
+R14 g3 g3d 2200
+R15 arm ol3 220
+R2 fire2 ol2 220
+R3 g1 0 4700
+R4 g2 0 4700
+R5 vbat vsense 22000
+R6 0 vsense 2200
+R7 vsw led1a 3300
+R8 vsw led2a 3300
+R9 vsw vg 1000
+Resp p5v 0 82
+Radc4 swsense 0 10meg
+Radc3 vsense 0 10meg
+Vgpio1 gp1i 0 PWL(0 0 30m 0 30.001m 3.3 280m 3.3 280.001m 0)
+Rgpio1 gp1i fire1 40
+Vgpio0 gp0i 0 DC 0
+Rgpio0 gp0i fire2 40
+Vgpio10 gp10i 0 PWL(0 0 20m 0 20.001m 3.3 310m 3.3 310.001m 0)
+Rgpio10 gp10i arm 40
+XU2 ol1 0 vg g1 PC817 CTR=1.0
+XU3 ol2 0 vg g2 PC817 CTR=1.0
+XU4 ol3 0 g3d 0 PC817 CTR=1.0
+.options method=gear reltol=1e-4
+.tran 5u 400m 0 20u uic
+.control
+run
+let ratio = v(vsw)/v(vbat)
+let vgs3 = v(g3)-v(vbat)
+let isol1 = abs(i(lsol1))
+let isol2 = abs(i(lsol2))
+meas tran ratio_idle find ratio at=15m
+meas tran isol1_idle_uA find isol1 at=15m
+meas tran vsense_idle find v(vsense) at=15m
+meas tran swsense_idle find v(swsense) at=15m
+meas tran vg1_idle find v(g1) at=15m
+meas tran vgs3_idle find vgs3 at=15m
+meas tran ratio_armed find ratio at=28m
+meas tran vgs3_on find vgs3 at=28m
+meas tran vg_armed find v(vg) at=28m
+meas tran isol1_armed find isol1 at=29m
+meas tran ipeak1 max isol1 from=30m to=285m
+meas tran ipeak2 max isol2 from=0 to=399m
+meas tran vgs1_on find v(g1) at=200m
+meas tran vgs2_on find v(g2) at=200m
+meas tran vds1_on find v(d1n) at=200m
+meas tran vg_on find v(vg) at=200m
+meas tran swsense_on find v(swsense) at=200m
+meas tran vsense_on find v(vsense) at=200m
+meas tran vdmax max v(d1n) from=279m to=295m
+meas tran vswmax max v(vsw) from=0 to=399m
+meas tran vbat_min min v(vbat) from=0 to=399m
+meas tran vg1max max v(g1) from=0 to=399m
+meas tran vgs3min min vgs3 from=0 to=399m
+meas tran isol1_300 find isol1 at=300m
+meas tran ratio_after find ratio at=395m
+meas tran t_ton_1mA when isol1=0.5 rise=1
+meas tran t_i50mA when isol1=0.05 fall=1
+meas tran vg2max max v(g2) from=0 to=399m
+meas tran t_vg1max max_at v(g1) from=0 to=399m
+meas tran t_vg2max max_at v(g2) from=0 to=399m
+wrdata /home/claude/torpedo/sim3/normal.dat isol1 v(vsw) v(d1n) v(g1) v(g3) v(vbat) v(swsense) v(vg) isol2
+.endc
+.end

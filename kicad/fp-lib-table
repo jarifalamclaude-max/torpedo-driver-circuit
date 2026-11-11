@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "torpedo")(type "KiCad")(uri "${KIPRJMOD}/torpedo.pretty")(options "")(descr "project footprints"))
+)
