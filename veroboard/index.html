@@ -31,6 +31,10 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .stage svg{width:100%;height:100%;display:block;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
 .tools{position:absolute;right:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .tools button{padding:6px 11px;min-width:38px}
+.zoom{position:absolute;right:10px;bottom:8px;display:flex;align-items:center;gap:8px;font:600 12px var(--f-body);color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 10px;max-width:calc(100% - 20px)}
+.zoom input{width:min(46vw,260px);accent-color:var(--accent);touch-action:pan-x}
+.zoom output{font:12px var(--f-mono);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
+.stage .hint{bottom:50px}
 .hint{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--muted);background:var(--panel);padding:2px 8px;border-radius:6px;border:1px solid var(--line)}
 .info{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 14px;min-height:64px}
 .info h2{font-family:var(--f-display);font-size:1.05rem;margin:0 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -73,7 +77,7 @@ h3{font-family:var(--f-display);font-size:1.1rem;margin:10px 0 0}
 
 <div class="wrap">
   <h1>Torpedo Driver v3 on veroboard</h1>
-  <p class="sub">Tap any pad, wire or net name to light up everything joined to it. Pinch or scroll to zoom, drag to move. Values come from your KiCad project.</p>
+  <p class="sub">Tap any pad, wire or net name to light up everything joined to it. Use the slider to zoom, drag to move. Values come from your KiCad project.</p>
   <div class="tabs" role="tablist">
     <button role="tab" id="tab-board" aria-selected="true" data-tab="board">Veroboard</button>
     <button role="tab" id="tab-sch" aria-selected="false" data-tab="sch">Schematic</button>
@@ -82,13 +86,15 @@ h3{font-family:var(--f-display);font-size:1.1rem;margin:10px 0 0}
 
   <section id="pane-board">
     <div class="stage"><svg id="vbSvg" aria-label="Veroboard layout"></svg>
-      <div class="tools"><button id="flipBtn" type="button">Show solder side</button><button data-z="in" data-for="vb" type="button">+</button><button data-z="out" data-for="vb" type="button">−</button><button data-z="fit" data-for="vb" type="button">Fit</button></div>
+      <div class="tools"><button id="flipBtn" type="button">Show solder side</button><button data-z="fit" data-for="vb" type="button">Fit</button></div>
+      <label class="zoom"><span>Zoom</span><input type="range" id="zoom-vb" min="-25" max="100" step="1" value="0" aria-label="Zoom veroboard"><output id="zoomv-vb">100%</output></label>
       <div class="hint" id="sideHint">Component side</div>
     </div>
   </section>
   <section id="pane-sch" hidden>
     <div class="stage"><svg id="schSvg" aria-label="Schematic"></svg>
-      <div class="tools"><button data-z="in" data-for="sch" type="button">+</button><button data-z="out" data-for="sch" type="button">−</button><button data-z="fit" data-for="sch" type="button">Fit</button></div>
+      <div class="tools"><button data-z="fit" data-for="sch" type="button">Fit</button></div>
+      <label class="zoom"><span>Zoom</span><input type="range" id="zoom-sch" min="-25" max="100" step="1" value="0" aria-label="Zoom schematic"><output id="zoomv-sch">100%</output></label>
     </div>
   </section>
   <section id="pane-list" hidden>
@@ -200,29 +206,28 @@ Object.keys(padsByNet).forEach(net=>{
 });
 
 /* ---------- pan / zoom ---------- */
-function Viewer(svg,w,h,onTap){
-  const g=el('g',{},svg); let s=1,tx=0,ty=0; const pts=new Map(); let moved=0,last=null,pinch=null;
+function Viewer(svg,w,h,onTap,key){
+  const g=el('g',{},svg); let s=1,tx=0,ty=0; const pts=new Map(); let moved=0,last=null,fitS=1; const sl=document.getElementById('zoom-'+key), out=document.getElementById('zoomv-'+key);
+  const sync=()=>{const v=Math.round(25*Math.log2(s/fitS)); sl.value=v; out.textContent=Math.round(100*s/fitS)+'%';};
   const apply=()=>g.setAttribute('transform',`translate(${tx},${ty}) scale(${s})`);
-  const fit=()=>{const r=svg.getBoundingClientRect(); if(!r.width)return; s=Math.min(r.width/w,r.height/h)*0.97; tx=(r.width-w*s)/2; ty=(r.height-h*s)/2; apply();};
-  const zoomAt=(f,cx,cy)=>{const ns=Math.max(0.2,Math.min(12,s*f)); f=ns/s; tx=cx-(cx-tx)*f; ty=cy-(cy-ty)*f; s=ns; apply();};
+  const fit=()=>{const r=svg.getBoundingClientRect(); if(!r.width)return; s=fitS=Math.min(r.width/w,r.height/h)*0.97; sync(); tx=(r.width-w*s)/2; ty=(r.height-h*s)/2; apply();};
+  const zoomAt=(f,cx,cy)=>{const ns=s*f; tx=cx-(cx-tx)*f; ty=cy-(cy-ty)*f; s=ns; apply();};
   const loc=e=>{const r=svg.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top};};
-  svg.addEventListener('wheel',e=>{e.preventDefault(); const p=loc(e); zoomAt(e.deltaY<0?1.15:1/1.15,p.x,p.y);},{passive:false});
-  svg.addEventListener('pointerdown',e=>{svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,loc(e)); moved=0; last=loc(e);
-    if(pts.size===2){const a=[...pts.values()]; pinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};}});
+  sl.addEventListener('input',()=>{const r=svg.getBoundingClientRect(); const t=fitS*Math.pow(2,sl.value/25); zoomAt(t/s,r.width/2,r.height/2); out.textContent=Math.round(100*s/fitS)+'%';});
+  svg.addEventListener('pointerdown',e=>{svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,loc(e)); moved=0; last=loc(e);});
   svg.addEventListener('pointermove',e=>{ if(!pts.has(e.pointerId))return; const p=loc(e); pts.set(e.pointerId,p);
-    if(pts.size===1){ tx+=p.x-last.x; ty+=p.y-last.y; moved+=Math.abs(p.x-last.x)+Math.abs(p.y-last.y); last=p; apply(); }
-    else if(pts.size===2&&pinch){ const a=[...pts.values()]; const dd=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); if(pinch.d>0)zoomAt(dd/pinch.d,(a[0].x+a[1].x)/2,(a[0].y+a[1].y)/2); pinch.d=dd; moved=99; } });
-  const up=e=>{ if(!pts.has(e.pointerId))return; pts.delete(e.pointerId); if(pts.size<2)pinch=null; if(pts.size===1)last=[...pts.values()][0];
+    if(pts.size===1){ tx+=p.x-last.x; ty+=p.y-last.y; moved+=Math.abs(p.x-last.x)+Math.abs(p.y-last.y); last=p; apply(); } });
+  const up=e=>{ if(!pts.has(e.pointerId))return; pts.delete(e.pointerId); if(pts.size===1)last=[...pts.values()][0];
     if(pts.size===0&&moved<7&&onTap){ const t=document.elementFromPoint(e.clientX,e.clientY); onTap(t&&t.closest?t.closest('[data-net],[data-ref]'):null); } };
-  svg.addEventListener('pointerup',up); svg.addEventListener('pointercancel',e=>{pts.delete(e.pointerId);pinch=null;});
-  return {g,fit,zoom:f=>{const r=svg.getBoundingClientRect(); zoomAt(f,r.width/2,r.height/2);}};
+  svg.addEventListener('pointerup',up); svg.addEventListener('pointercancel',e=>{pts.delete(e.pointerId);});
+  return {g,fit};
 }
 
 /* ---------- veroboard ---------- */
 let flip=false, selNet=null;
 const vbSvg=document.getElementById('vbSvg');
 const BW=OFF*2+(COLS-1)*P, BH=OFF*2+(ROWS-1)*P;
-const vb=Viewer(vbSvg,BW,BH,onTap);
+const vb=Viewer(vbSvg,BW,BH,onTap,'vb');
 const X=c=>OFF+(flip?COLS-1-c:c)*P, Y=r=>OFF+r*P;
 function drawBoard(){
   const g=vb.g; g.textContent='';
@@ -290,7 +295,7 @@ document.getElementById('flipBtn').onclick=function(){flip=!flip; this.textConte
 
 /* ---------- schematic ---------- */
 const schSvg=document.getElementById('schSvg'); const SW=1740,SH=700;
-const sch=Viewer(schSvg,SW,SH,t=>{ if(t&&t.getAttribute('data-net')){const n=t.getAttribute('data-net'); showNet(n===selNet?null:n);} else showNet(null); });
+const sch=Viewer(schSvg,SW,SH,t=>{ if(t&&t.getAttribute('data-net')){const n=t.getAttribute('data-net'); showNet(n===selNet?null:n);} else showNet(null); },'sch');
 (function drawSch(){
   const g=sch.g; el('rect',{x:0,y:0,width:SW,height:SH,fill:'var(--sch-bg)',class:'s-bgr'},g);
   const wire=(...p)=>{let d='';for(let i=0;i<p.length;i+=2)d+=(i?'L':'M')+p[i]+' '+p[i+1];el('path',{d,class:'s-w'},g);};
@@ -397,7 +402,7 @@ document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
   for(const k in panes)document.getElementById(panes[k]).hidden=(k!==b.dataset.tab);
   if(b.dataset.tab==='sch'&&!fitted.sch){sch.fit();fitted.sch=true;}
 });
-document.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>{const v=b.dataset.for==='vb'?vb:sch; if(b.dataset.z==='fit')v.fit(); else v.zoom(b.dataset.z==='in'?1.3:1/1.3);});
+document.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>{const v=b.dataset.for==='vb'?vb:sch; v.fit();});
 drawBoard(); showNet(null); requestAnimationFrame(()=>vb.fit());
 window.addEventListener('resize',()=>{});
 })();
