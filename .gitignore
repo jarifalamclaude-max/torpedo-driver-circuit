@@ -1,0 +1,7 @@
+__pycache__/
+kicad/simulation/out/
+kicad/_route_tmp/
+*.kicad_prl
+*-backups/
+fp-info-cache
+firmware/test/host_test

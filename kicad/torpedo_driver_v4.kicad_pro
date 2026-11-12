@@ -179,7 +179,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "torpedo_driver_v3.kicad_pro",
+    "filename": "torpedo_driver_v4.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -196,9 +196,9 @@
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.4,
-        "via_diameter": 0.9,
-        "via_drill": 0.45,
+        "track_width": 0.35,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
         "wire_width": 6
       }
     ],

@@ -1,0 +1,94 @@
+{
+ "corners": [
+  {
+   "ctr": 0.5,
+   "cjc": "15p",
+   "scl_fall": 2.127537e-06,
+   "scl_rise": 3.472008e-05,
+   "sda_fall": 2.614837e-06,
+   "sda_rise": 1.230801e-05,
+   "rx_fall": 1.039181e-05,
+   "rx_rise": 3.195611e-05,
+   "sda_low_level": 0.2536762,
+   "i_sink": -0.00253681,
+   "rx_low_level": 0.09560615
+  },
+  {
+   "ctr": 0.5,
+   "cjc": "75p",
+   "scl_fall": 8.442085e-06,
+   "scl_rise": 9.511464e-05,
+   "sda_fall": 9.653023e-06,
+   "sda_rise": 3.48997e-05,
+   "rx_fall": 4.34071e-05,
+   "rx_rise": 0.0001237952,
+   "sda_low_level": 0.2536768,
+   "i_sink": -0.002537413,
+   "rx_low_level": 0.09560617
+  },
+  {
+   "ctr": 1.0,
+   "cjc": "15p",
+   "scl_fall": 1.057343e-06,
+   "scl_rise": 4.151245e-05,
+   "sda_fall": 1.198287e-06,
+   "sda_rise": 1.905201e-05,
+   "rx_fall": 4.713479e-06,
+   "rx_rise": 3.880508e-05,
+   "sda_low_level": 0.2536762,
+   "i_sink": -0.002536812,
+   "rx_low_level": 0.06903197
+  },
+  {
+   "ctr": 1.0,
+   "cjc": "75p",
+   "scl_fall": 4.120798e-06,
+   "scl_rise": 0.000101973,
+   "sda_fall": 4.395956e-06,
+   "sda_rise": 4.17609e-05,
+   "rx_fall": 1.943807e-05,
+   "rx_rise": 0.000131018,
+   "sda_low_level": 0.2536768,
+   "i_sink": -0.002537428,
+   "rx_low_level": 0.06903198
+  },
+  {
+   "ctr": 3.0,
+   "cjc": "15p",
+   "scl_fall": 3.639991e-07,
+   "scl_rise": 5.22675e-05,
+   "sda_fall": 3.910882e-07,
+   "sda_rise": 2.978102e-05,
+   "rx_fall": 1.494695e-06,
+   "rx_rise": 4.958997e-05,
+   "sda_low_level": 0.2536762,
+   "i_sink": -0.002536814,
+   "rx_low_level": 0.04005805
+  },
+  {
+   "ctr": 3.0,
+   "cjc": "75p",
+   "scl_fall": 1.361366e-06,
+   "scl_rise": 0.0001127698,
+   "sda_fall": 1.402498e-06,
+   "sda_rise": 5.2544e-05,
+   "rx_fall": 6.098338e-06,
+   "rx_rise": 0.0001419942,
+   "sda_low_level": 0.2536768,
+   "i_sink": -0.002537453,
+   "rx_low_level": 0.04005806
+  }
+ ],
+ "worst": {
+  "scl_fall": 8.442085e-06,
+  "scl_rise": 0.0001127698,
+  "sda_fall": 9.653023e-06,
+  "sda_rise": 5.2544e-05,
+  "rx_fall": 4.34071e-05,
+  "rx_rise": 0.0001419942,
+  "sda_low_level": 0.2536768,
+  "i_sink": 0,
+  "rx_low_level": 0.09560617
+ },
+ "recommended_half_bit_us": 284
+}

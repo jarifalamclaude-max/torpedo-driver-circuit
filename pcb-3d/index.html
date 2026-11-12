@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Torpedo Driver PCB 3D</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -114,27 +113,27 @@ code{font-family:var(--mono);font-size:.84em;background:var(--card);border:1px s
 
 <div class="wrap">
   <h1>Torpedo Driver PCB 3D</h1>
-  <p>v3 board: ashol Gerber theke banano 3D view, tar niche current kon rasta diye jay ar kon part ki kaj kore. Mouse ba angul diye ghurao, scroll ba pinch kore zoom.</p>
+  <p>v4 board: ashol Gerber theke banano 3D view, tar niche current kon rasta diye jay ar kon part ki kaj kore. Mouse ba angul diye ghurao, scroll ba pinch kore zoom.</p>
   <div id="stage"><div id="msg">3D load hocche…</div></div>
   <div class="bar">
     <button id="v-iso" aria-pressed="true">3D view</button>
     <button id="v-top" aria-pressed="false">Upor theke</button>
     <button id="v-bottom" aria-pressed="false">Nich theke</button>
     <button id="v-side" aria-pressed="false">Pash theke</button>
-    <button id="v-esp" aria-pressed="false">ESP chhara</button>
+    <button id="v-esp" aria-pressed="false">ESP ar ADS chhara</button>
     <button id="t-spin" aria-pressed="false">Auto rotate</button>
   </div>
-  <div class="facts"><span>v3 · 83 × 52 mm · 2 layer · 1.6 mm</span><span>through-hole only</span><span>GND plane on bottom</span><span>3 MOSFET + 3 optocoupler</span></div>
+  <div class="facts"><span>v4 · 100 × 88 mm · 2 layer · 1.6 mm</span><span>through-hole only</span><span>GNDL ar GNDP alada, majhe 6.2 mm isolation channel</span><span>3 MOSFET · 6 optocoupler · ADS1115</span><span>DRC 0 error</span></div>
 
   <h2>Current kon rasta diye jay</h2>
-  <p>Solenoid-e current jete hole duita switch ekshathe on hote hoy: + line-e Q3 (ARM switch) ar − line-e Q1 ba Q2 (fire switch). Niche step gulo ek ek kore tipo.</p>
+  <p>Solenoid-e current jete hole duita switch ekshathe on hote hoy: + line-e Q3 (ARM switch) ar − line-e Q1 ba Q2 (fire switch). ESP32 ar battery-r majhe kono tar nei: shob signal optocoupler-er alo diye par hoy. Niche step gulo ek ek kore tipo.</p>
   <div class="bar" id="steps" role="group" aria-label="Fire sequence steps">
     <span class="lab">Step</span>
     <button data-step="idle" aria-pressed="true">1 · Battery lagano</button>
-    <button data-step="arm" aria-pressed="false">2 · Q3 on</button>
+    <button data-step="arm" aria-pressed="false">2 · ARM</button>
     <button data-step="fire" aria-pressed="false">3 · Fire</button>
     <button data-step="fly" aria-pressed="false">4 · Pulse shesh</button>
-    <button data-step="off" aria-pressed="false">5 · Q3 off</button>
+    <button data-step="off" aria-pressed="false">5 · Disarm</button>
   </div>
   <div class="bar" role="group" aria-label="Channel and fault cases">
     <span class="lab">Solenoid</span>
@@ -143,94 +142,116 @@ code{font-family:var(--mono);font-size:.84em;background:var(--card);border:1px s
     <span class="lab" style="margin-left:10px">Jodi nosto hoy</span>
     <button data-step="fq" aria-pressed="false">Fire MOSFET short</button>
     <button data-step="fq3" aria-pressed="false">Q3 short</button>
+    <button data-step="fopen" aria-pressed="false">Solenoid-er tar khola</button>
   </div>
 
   <figure>
     <div class="flowbox">
-      <svg id="flow" viewBox="0 0 1040 580" role="img" aria-label="Board-er current path: battery plus theke XT60, fuse F1, ARM switch Q3, solenoid, fire switch Q1 ba Q2, GND plane hoye battery minus. ESP32 tinta optocoupler diye tinta MOSFET-er gate chalay.">
-        <!-- wires, drawn in the direction the current flows -->
-        <path id="w-p1" class="w" d="M120,70 H145"/>
-        <path id="w-p2" class="w" d="M205,70 H230"/>
-        <path id="w-p3a" class="w" d="M300,70 H440"/>
-        <path id="w-p3b" class="w" d="M440,70 H470"/>
-        <path id="w-p4a" class="w" d="M560,70 H590"/>
-        <path id="w-p4b" class="w" d="M590,70 H640"/>
-        <path id="w-p4c" class="w" d="M640,70 H730"/>
-        <path id="w-p5" class="w" d="M730,70 H930"/>
-        <path id="w-r12" class="w thin" d="M440,70 V24 H590 V70"/>
-        <path id="w-divb" class="w thin" d="M335,70 V108"/>
-        <path id="w-cap" class="w thin" d="M395,70 V108"/>
-        <path id="w-divs" class="w thin" d="M640,70 V108"/>
-        <path id="w-s1a" class="w" d="M730,70 V130"/>
-        <path id="w-s1b" class="w" d="M730,200 V300"/>
-        <path id="w-s1c" class="w" d="M730,350 V530"/>
-        <path id="w-s2a" class="w" d="M930,70 V130"/>
-        <path id="w-s2b" class="w" d="M930,200 V300"/>
-        <path id="w-s2c" class="w" d="M930,350 V530"/>
-        <path id="w-g2" class="w" d="M930,530 H730"/>
-        <path id="w-g1" class="w" d="M730,530 H205"/>
-        <path id="w-g3" class="w" d="M145,530 H120"/>
-        <path id="w-d1" class="w thin" d="M730,225 H810 V100 H730"/>
-        <path id="w-d2" class="w thin" d="M930,225 H1010 V100 H930"/>
-        <path id="w-f1" class="w only" d="M730,200 V225 H810 V100 H730 V130"/>
-        <path id="w-f2" class="w only" d="M930,200 V225 H1010 V100 H930 V130"/>
-        <path id="w-c0a" class="w thin" d="M170,280 H515 V186"/>
-        <path id="w-c0b" class="w thin" d="M515,150 V95"/>
-        <path id="w-c1a" class="w thin" d="M170,325 H590"/>
-        <path id="w-c1b" class="w thin" d="M650,325 H685"/>
-        <path id="w-c2a" class="w thin" d="M170,380 H722 a8,8 0 0 1 16,0 H820 V343"/>
-        <path id="w-c2b" class="w thin" d="M850,325 H885"/>
-        <path id="w-eg" class="w thin" d="M170,450 H260 V530"/>
-        <path class="w thin" d="M335,136 V150 M395,136 V150 M640,136 V150"/>
-        <path class="gnd" d="M327,150 H343 M330,154 H340 M333,158 H337 M387,150 H403 M390,154 H400 M393,158 H397 M632,150 H648 M635,154 H645 M638,158 H642"/>
+      <svg id="flow" viewBox="0 0 1080 670" role="img" aria-label="Board-er current path: battery plus theke XT60, fuse F2 ar F1, ARM switch Q3, solenoid, fire switch Q1 ba Q2, GNDP hoye battery minus. Nicher logic side-e ESP32, majhe isolation; ESP32 chhoyta optocoupler diye MOSFET chalay ar ADS1115 theke voltage pore.">
+        <!-- power side: wires drawn in the direction the current flows -->
+        <path id="w-p1" class="w" d="M120,60 H145"/>
+        <path id="w-p2" class="w" d="M205,60 H230"/>
+        <path id="w-p2b" class="w" d="M300,60 H325"/>
+        <path id="w-p3a" class="w" d="M395,60 H550"/>
+        <path id="w-p4a" class="w" d="M640,60 H700"/>
+        <path id="w-p4b" class="w" d="M700,60 H760"/>
+        <path id="w-p5" class="w" d="M760,60 H960"/>
+        <path id="w-r12" class="w thin" d="M540,60 V14 H660 V60"/>
+        <path id="w-cap" class="w thin" d="M415,60 V98"/>
+        <path id="w-ldo" class="w thin" d="M465,60 V98 M465,126 V190"/>
+        <path id="w-divb" class="w thin" d="M515,60 V98"/>
+        <path id="w-divs" class="w thin" d="M670,60 V98"/>
+        <path id="w-s1a" class="w" d="M760,60 V110"/>
+        <path id="w-s1b" class="w" d="M760,180 V260"/>
+        <path id="w-s1c" class="w" d="M760,310 V390"/>
+        <path id="w-s2a" class="w" d="M960,60 V110"/>
+        <path id="w-s2b" class="w" d="M960,180 V260"/>
+        <path id="w-s2c" class="w" d="M960,310 V390"/>
+        <path id="w-sd1" class="w thin" d="M760,217 H700"/>
+        <path id="w-sd2" class="w thin" d="M960,217 H900"/>
+        <path id="w-g2" class="w" d="M960,390 H760"/>
+        <path id="w-g1" class="w" d="M760,390 H205"/>
+        <path id="w-g3" class="w" d="M145,390 H120"/>
+        <path id="w-d1" class="w thin" d="M760,215 H840 V85 H760"/>
+        <path id="w-d2" class="w thin" d="M960,215 H1040 V85 H960"/>
+        <path id="w-f1" class="w only" d="M760,180 V215 H840 V85 H760 V110"/>
+        <path id="w-f2" class="w only" d="M960,180 V215 H1040 V85 H960 V110"/>
+        <path class="w thin" d="M415,126 V140"/>
+        <path class="gnd" d="M407,140 H423 M410,144 H420 M413,148 H417"/>
+        <!-- optocoupler outputs (power side) -->
+        <path id="w-i5" class="w thin" d="M330,435 V398 a8,8 0 0 1 0,-16 V280"/>
+        <path id="w-i6" class="w thin" d="M400,435 V398 a8,8 0 0 1 0,-16 V280"/>
+        <path id="w-i7" class="w thin" d="M470,280 V382 a8,8 0 0 1 0,16 V435"/>
+        <path id="w-i4" class="w thin" d="M595,435 V398 a8,8 0 0 1 0,-16 V85"/>
+        <path id="w-i2" class="w thin" d="M690,435 V398 a8,8 0 0 1 0,-16 V285 H715"/>
+        <path id="w-i3" class="w thin" d="M880,435 V398 a8,8 0 0 1 0,-16 V285 H915"/>
+        <!-- logic side: ESP32 pins to the optocoupler LEDs -->
+        <path id="w-c5" class="w thin" d="M270,530 H330 V475"/>
+        <path id="w-c6" class="w thin" d="M270,555 H400 V475"/>
+        <path id="w-c7" class="w thin" d="M470,475 V580 H270"/>
+        <path id="w-c0" class="w thin" d="M270,605 H595 V475"/>
+        <path id="w-c1" class="w thin" d="M270,628 H690 V475"/>
+        <path id="w-c2" class="w thin" d="M270,648 H880 V475"/>
+        <line class="iso" x1="10" y1="455" x2="1070" y2="455"/>
 
-        <text class="rail" x="365" y="60" text-anchor="middle">VBAT</text>
-        <text class="rail" x="685" y="60" text-anchor="middle">VSW</text>
-        <text class="lbl" x="328" y="153" text-anchor="end">GPIO3-e mapa</text>
-        <text class="lbl" x="628" y="153" text-anchor="end">GPIO4-e mapa</text>
-        <text class="lbl" x="205" y="273">220 Ω</text><text class="lbl" x="205" y="318">220 Ω</text><text class="lbl" x="205" y="373">220 Ω</text>
-        <text class="lbl" x="470" y="553" text-anchor="middle">GND plane: board-er nicher pura copper, sob current eikhan diye battery − e fere</text>
+        <text class="rail" x="455" y="50" text-anchor="middle">VBAT</text>
+        <text class="rail" x="725" y="50" text-anchor="middle">VSW</text>
+        <text class="rail" x="20" y="447">POWER SIDE · GNDP</text>
+        <text class="rail" x="20" y="473">LOGIC SIDE · GNDL</text>
+        <text class="lbl" x="1062" y="447" text-anchor="end">isolation: tar nei</text>
+        <text class="rail" x="262" y="382" text-anchor="middle">GNDP</text>
 
-        <g class="node" id="n-batp"><rect x="20" y="45" width="100" height="50" rx="6"/><text class="nm" x="70" y="66">4S LiPo +</text><text class="sub" x="70" y="83">13.2–16.8 V</text></g>
-        <g class="node" id="n-j1p"><rect x="145" y="50" width="60" height="40" rx="6"/><text class="nm" x="175" y="67">J1</text><text class="sub" x="175" y="82">XT60 +</text></g>
-        <g class="node" id="n-f1"><rect x="230" y="50" width="70" height="40" rx="6"/><text class="nm" x="265" y="67">F1 fuse</text><text class="sub" x="265" y="82">3 A PTC</text></g>
-        <g class="node" id="n-q3"><rect x="470" y="45" width="90" height="50" rx="6"/><text class="nm" x="515" y="66">Q3 · ARM</text><text class="st" id="st-q3" x="515" y="84">OFF</text></g>
-        <g class="node" id="n-r12"><rect x="485" y="12" width="60" height="24" rx="5"/><text class="sub" x="515" y="28">R12 15k</text></g>
-        <g class="node" id="n-divb"><rect x="307" y="108" width="56" height="28" rx="5"/><text class="sub" x="335" y="126">R5·R6</text></g>
-        <g class="node" id="n-cap"><rect x="367" y="108" width="56" height="28" rx="5"/><text class="sub" x="395" y="126">C1·D4</text></g>
-        <g class="node" id="n-divs"><rect x="612" y="108" width="56" height="28" rx="5"/><text class="sub" x="640" y="126">R10·R11</text></g>
-        <g class="node" id="n-u4"><rect x="485" y="150" width="60" height="36" rx="5"/><line class="iso" x1="490" y1="168" x2="540" y2="168"/><text class="sub" x="515" y="164">U4</text><text class="sub" x="515" y="181">opto</text></g>
+        <g class="node" id="n-batp"><rect x="20" y="35" width="100" height="50" rx="6"/><text class="nm" x="70" y="56">4S LiPo +</text><text class="sub" x="70" y="73">13.2–16.8 V</text></g>
+        <g class="node" id="n-j1p"><rect x="145" y="40" width="60" height="40" rx="6"/><text class="nm" x="175" y="57">J1</text><text class="sub" x="175" y="72">XT60 +</text></g>
+        <g class="node" id="n-f2"><rect x="230" y="40" width="70" height="40" rx="6"/><text class="nm" x="265" y="57">F2 fuse</text><text class="sub" x="265" y="72">5 A fast</text></g>
+        <g class="node" id="n-f1"><rect x="325" y="40" width="70" height="40" rx="6"/><text class="nm" x="360" y="57">F1 PTC</text><text class="sub" x="360" y="72">3 A hold</text></g>
+        <g class="node" id="n-cap"><rect x="393" y="98" width="44" height="28" rx="5"/><text class="sub" x="415" y="116">C1·D4</text></g>
+        <g class="node" id="n-ldo"><rect x="443" y="98" width="44" height="28" rx="5"/><text class="sub" x="465" y="116">U8 3V3</text></g>
+        <g class="node" id="n-divb"><rect x="493" y="98" width="44" height="28" rx="5"/><text class="sub" x="515" y="111">÷11</text><text class="sub" x="515" y="122">→ A0</text></g>
+        <g class="node" id="n-q3"><rect x="550" y="35" width="90" height="50" rx="6"/><text class="nm" x="595" y="56">Q3 · ARM</text><text class="st" id="st-q3" x="595" y="74">OFF</text></g>
+        <g class="node" id="n-r12"><rect x="570" y="2" width="50" height="24" rx="5"/><text class="sub" x="595" y="18">R12 68k</text></g>
+        <g class="node" id="n-divs"><rect x="648" y="98" width="44" height="28" rx="5"/><text class="sub" x="670" y="111">÷11</text><text class="sub" x="670" y="122">→ A1</text></g>
+        <g class="node" id="n-ads"><rect x="300" y="190" width="200" height="90" rx="8"/><text class="nm" x="400" y="212">U9 · ADS1115</text><text class="sub" x="400" y="232">A0 VBAT · A1 VSW</text><text class="sub" x="400" y="248">A2 D1N · A3 D2N</text><text class="sub" x="400" y="266">power side-e, 3.3 V U8 theke</text></g>
 
-        <g class="node" id="n-sol1"><rect x="680" y="130" width="100" height="70" rx="6"/><text class="nm" x="730" y="160">Solenoid 1</text><text class="sub" x="730" y="178">J2 · 15 Ω</text></g>
-        <g class="node" id="n-d1"><rect x="795" y="148" width="30" height="34" rx="5"/><text class="sub" x="810" y="169">D1</text></g>
-        <g class="node" id="n-q1"><rect x="685" y="300" width="90" height="50" rx="6"/><text class="nm" x="730" y="321">Q1 · FIRE 1</text><text class="st" id="st-q1" x="730" y="339">OFF</text></g>
-        <g class="node" id="n-u2"><rect x="590" y="307" width="60" height="36" rx="5"/><line class="iso" x1="620" y1="311" x2="620" y2="339"/><text class="sub" x="606" y="329">U2</text><text class="sub" x="636" y="329">opto</text></g>
+        <g class="node" id="n-sol1"><rect x="710" y="110" width="100" height="70" rx="6"/><text class="nm" x="760" y="140">Solenoid 1</text><text class="sub" x="760" y="158">J2 · ~15 Ω</text></g>
+        <g class="node" id="n-d1"><rect x="825" y="130" width="30" height="34" rx="5"/><text class="sub" x="840" y="151">D1</text></g>
+        <g class="node" id="n-sd1"><rect x="650" y="205" width="50" height="24" rx="5"/><text class="sub" x="675" y="221">÷11 A2</text></g>
+        <g class="node" id="n-q1"><rect x="715" y="260" width="90" height="50" rx="6"/><text class="nm" x="760" y="281">Q1 · FIRE 1</text><text class="st" id="st-q1" x="760" y="299">OFF</text></g>
+        <g class="node" id="n-sol2"><rect x="910" y="110" width="100" height="70" rx="6"/><text class="nm" x="960" y="140">Solenoid 2</text><text class="sub" x="960" y="158">J3 · ~15 Ω</text></g>
+        <g class="node" id="n-d2"><rect x="1025" y="130" width="30" height="34" rx="5"/><text class="sub" x="1040" y="151">D2</text></g>
+        <g class="node" id="n-sd2"><rect x="850" y="205" width="50" height="24" rx="5"/><text class="sub" x="875" y="221">÷11 A3</text></g>
+        <g class="node" id="n-q2"><rect x="915" y="260" width="90" height="50" rx="6"/><text class="nm" x="960" y="281">Q2 · FIRE 2</text><text class="st" id="st-q2" x="960" y="299">OFF</text></g>
+        <g class="node" id="n-batm"><rect x="20" y="365" width="100" height="50" rx="6"/><text class="nm" x="70" y="394">4S LiPo −</text></g>
+        <g class="node" id="n-j1m"><rect x="145" y="370" width="60" height="40" rx="6"/><text class="nm" x="175" y="387">J1</text><text class="sub" x="175" y="402">XT60 −</text></g>
 
-        <g class="node" id="n-sol2"><rect x="880" y="130" width="100" height="70" rx="6"/><text class="nm" x="930" y="160">Solenoid 2</text><text class="sub" x="930" y="178">J3 · 15 Ω</text></g>
-        <g class="node" id="n-d2"><rect x="995" y="148" width="30" height="34" rx="5"/><text class="sub" x="1010" y="169">D2</text></g>
-        <g class="node" id="n-q2"><rect x="885" y="300" width="90" height="50" rx="6"/><text class="nm" x="930" y="321">Q2 · FIRE 2</text><text class="st" id="st-q2" x="930" y="339">OFF</text></g>
-        <g class="node" id="n-u3"><rect x="790" y="307" width="60" height="36" rx="5"/><line class="iso" x1="820" y1="311" x2="820" y2="339"/><text class="sub" x="806" y="329">U3</text><text class="sub" x="836" y="329">opto</text></g>
+        <g class="node" id="n-u5"><rect x="302" y="435" width="56" height="40" rx="5"/><text class="sub" x="330" y="451">U5</text><text class="sub" x="330" y="468">SCL</text></g>
+        <g class="node" id="n-u6"><rect x="372" y="435" width="56" height="40" rx="5"/><text class="sub" x="400" y="451">U6</text><text class="sub" x="400" y="468">SDA →</text></g>
+        <g class="node" id="n-u7"><rect x="442" y="435" width="56" height="40" rx="5"/><text class="sub" x="470" y="451">U7</text><text class="sub" x="470" y="468">SDA ←</text></g>
+        <g class="node" id="n-u4"><rect x="567" y="435" width="56" height="40" rx="5"/><text class="sub" x="595" y="451">U4</text><text class="sub" x="595" y="468">ARM</text></g>
+        <g class="node" id="n-u2"><rect x="662" y="435" width="56" height="40" rx="5"/><text class="sub" x="690" y="451">U2</text><text class="sub" x="690" y="468">FIRE 1</text></g>
+        <g class="node" id="n-u3"><rect x="852" y="435" width="56" height="40" rx="5"/><text class="sub" x="880" y="451">U3</text><text class="sub" x="880" y="468">FIRE 2</text></g>
 
-        <g class="node" id="n-esp"><rect x="20" y="240" width="150" height="240" rx="8"/>
-          <text class="nm" x="95" y="262">ESP32-C3</text>
-          <text class="sub" x="162" y="284" style="text-anchor:end">GPIO10 · ARM</text>
-          <text class="sub" x="162" y="329" style="text-anchor:end">GPIO1 · FIRE 1</text>
-          <text class="sub" x="162" y="384" style="text-anchor:end">GPIO0 · FIRE 2</text>
-          <text class="sub" x="30" y="410" style="text-anchor:start">GPIO3 ← VBAT ÷ 11</text>
-          <text class="sub" x="30" y="426" style="text-anchor:start">GPIO4 ← VSW ÷ 11</text>
-          <text class="sub" x="162" y="454" style="text-anchor:end">GND</text>
-          <text class="sub" x="30" y="472" style="text-anchor:start">USB → Jetson</text></g>
-        <g class="node" id="n-batm"><rect x="20" y="510" width="100" height="40" rx="6"/><text class="nm" x="70" y="535">4S LiPo −</text></g>
-        <g class="node" id="n-j1m"><rect x="145" y="510" width="60" height="40" rx="6"/><text class="nm" x="175" y="527">J1</text><text class="sub" x="175" y="542">XT60 −</text></g>
+        <g class="node" id="n-esp"><rect x="20" y="495" width="250" height="165" rx="8"/>
+          <text class="nm" x="80" y="520">ESP32-C3</text>
+          <text class="sub" x="30" y="545" style="text-anchor:start">GNDL-e</text>
+          <text class="sub" x="30" y="561" style="text-anchor:start">5 V: J4 + D3</text>
+          <text class="sub" x="30" y="577" style="text-anchor:start">ba USB</text>
+          <text class="sub" x="30" y="600" style="text-anchor:start">USB → Jetson</text>
+          <text class="sub" x="262" y="533" style="text-anchor:end">GPIO5 · SCL</text>
+          <text class="sub" x="262" y="558" style="text-anchor:end">GPIO6 · SDA out</text>
+          <text class="sub" x="262" y="583" style="text-anchor:end">GPIO7 · SDA in</text>
+          <text class="sub" x="262" y="608" style="text-anchor:end">GPIO10 · ARM</text>
+          <text class="sub" x="262" y="631" style="text-anchor:end">GPIO1 · FIRE 1</text>
+          <text class="sub" x="262" y="651" style="text-anchor:end">GPIO0 · FIRE 2</text></g>
       </svg>
     </div>
     <div class="legend">
       <span><i></i>solenoid current (mota rasta)</span>
-      <span><i class="c"></i>ESP32 control, ~9 mA</span>
-      <span><i class="t"></i>mapa / self-test current, 1 mA-er kom</span>
+      <span><i class="c"></i>ESP32 control, opto LED ~11 mA</span>
+      <span><i class="t"></i>mapa / self-test, 1 mA-er kom</span>
       <span><i class="f"></i>flyback loop</span>
     </div>
-    <figcaption>Dag gulo current-er dike chole. Optocoupler-er majher bhanga dag mane okhane tar nei, shudhu alo: ESP32-er pin ar MOSFET gate-er majhe direct connection nai. Number gulo full battery (16.8 V) dhore simulation theke.</figcaption>
+    <figcaption>Dag gulo current-er dike chole. Majher bhanga dag isolation: oi dag par hoy shudhu optocoupler-er alo, kono tar na. GNDP holo power ground plane, sob solenoid current eikhan diye battery − e fere. ESP32 mapar jonno ADS1115-ke I²C-te jiggesh kore (U5, U6 pathay, U7 uttor ferot ane). Number gulo full battery (16.8 V) ar ekta prothinidhi solenoid dhore ngspice simulation theke.</figcaption>
   </figure>
   <div class="panel" aria-live="polite">
     <div><h3 id="s-title"></h3><p id="s-body"></p></div>
@@ -240,15 +261,19 @@ code{font-family:var(--mono);font-size:.84em;background:var(--card);border:1px s
   <h2>Ek line-e rasta</h2>
   <div class="lane">
     <span class="cap">Mota rasta (solenoid current, ~1.1 A):</span>
-    <ol class="chain pw"><li><b>4S LiPo +</b></li><li><b>XT60 (J1)</b></li><li><b>Fuse F1</b></li><li><b>Q3 ARM switch</b></li><li><b>Terminal + (J2 / J3)</b></li><li><b>Solenoid</b></li><li><b>Terminal −</b></li><li><b>Q1 / Q2 fire switch</b></li><li><b>GND plane</b></li><li><b>XT60 (J1)</b></li><li><b>4S LiPo −</b></li></ol>
+    <ol class="chain pw"><li><b>4S LiPo +</b></li><li><b>XT60 (J1)</b></li><li><b>F2 5 A fuse</b></li><li><b>F1 PTC</b></li><li><b>Q3 ARM switch</b></li><li><b>Terminal + (J2 / J3)</b></li><li><b>Solenoid</b></li><li><b>Terminal −</b></li><li><b>Q1 / Q2 fire switch</b></li><li><b>GNDP plane</b></li><li><b>XT60 (J1)</b></li><li><b>4S LiPo −</b></li></ol>
   </div>
   <div class="lane">
-    <span class="cap">Chikon rasta (control, ~9 mA):</span>
-    <ol class="chain ct"><li><b>Jetson</b></li><li><b>USB</b></li><li><b>ESP32-C3</b></li><li><b>220 Ω</b></li><li><b>Optocoupler LED</b></li><li><b>alo</b></li><li><b>Opto transistor</b></li><li><b>MOSFET gate</b></li></ol>
+    <span class="cap">Chikon rasta (control, logic side theke power side):</span>
+    <ol class="chain ct"><li><b>Jetson</b></li><li><b>USB</b></li><li><b>ESP32-C3</b></li><li><b>150 Ω</b></li><li><b>Optocoupler LED</b></li><li><b>alo</b></li><li><b>Opto transistor</b></li><li><b>MOSFET gate</b></li></ol>
+  </div>
+  <div class="lane">
+    <span class="cap">Mapa (power side theke logic side):</span>
+    <ol class="chain"><li><b>VBAT · VSW · D1N · D2N</b></li><li><b>200k / 20k (÷ 11)</b></li><li><b>ADS1115</b></li><li><b>I²C</b></li><li><b>U5 · U6 · U7</b></li><li><b>ESP32 GPIO5 · 6 · 7</b></li></ol>
   </div>
   <div class="lane">
     <span class="cap">Pulse shesh hole solenoid-er jome thaka current:</span>
-    <ol class="chain"><li><b>Solenoid</b></li><li><b>D1 / D2 (flyback)</b></li><li><b>abar Solenoid</b></li><li><b>~6 ms-e shesh</b></li></ol>
+    <ol class="chain"><li><b>Solenoid</b></li><li><b>D1 / D2 (UF5408)</b></li><li><b>abar Solenoid</b></li><li><b>~15 ms-e shesh</b></li></ol>
   </div>
 
   <h2>Kon kon component</h2>
@@ -257,216 +282,223 @@ code{font-family:var(--mono);font-size:.84em;background:var(--card);border:1px s
       <thead><tr><th>Ref</th><th>Part</th><th class="n">Qty</th><th>Kaj</th></tr></thead>
       <tbody>
         <tr><td>J1</td><td>XT60PW-M (PCB, right-angle)</td><td class="n">1</td><td>4S LiPo input</td></tr>
-        <tr><td>F1</td><td>RUEF300 PTC fuse, 3 A hold, 30 V</td><td class="n">1</td><td>Short hole current komay, thanda hole nije thik hoy. LCSC / JLCPCB part C315961</td></tr>
+        <tr><td>F2</td><td>5 A fast-acting 5×20 mm ceramic fuse + 2 × Littelfuse 111 clip</td><td class="n">1</td><td>Boro short-e (PTC-er 40 A limit-er upore) line kete dey</td></tr>
+        <tr><td>F1</td><td>RUEF300 PTC fuse, 3 A hold, 30 V</td><td class="n">1</td><td>Overload-e current komay, thanda hole nije thik hoy</td></tr>
         <tr><td>C1</td><td>470 µF 35 V electrolytic</td><td class="n">1</td><td>Battery line-er dhakka sokhe</td></tr>
-        <tr><td>D4</td><td>P6KE20A TVS diode</td><td class="n">1</td><td>20 V-er upor-er spike kete dey</td></tr>
-        <tr><td>Q3</td><td>IRF4905 P-MOSFET, TO-220</td><td class="n">1</td><td>+ line-er ARM switch. Eta off thakle kono solenoid chole na</td></tr>
+        <tr><td>D4</td><td>P6KE22A TVS diode</td><td class="n">1</td><td>Battery line-er spike kete dey</td></tr>
+        <tr><td>Q3</td><td>IRF4905 P-MOSFET, TO-220</td><td class="n">1</td><td>+ line-er ARM switch</td></tr>
         <tr><td>Q1, Q2</td><td>IRLZ44N N-MOSFET, TO-220</td><td class="n">2</td><td>Solenoid 1 / 2 fire switch (− side)</td></tr>
-        <tr><td>U2, U3, U4</td><td>PC817 optocoupler, DIP-4</td><td class="n">3</td><td>ESP32 pin ar MOSFET gate-er majhe alo diye signal; MOSFET nosto holeo battery voltage ESP-te jay na</td></tr>
-        <tr><td>D1, D2</td><td>1N5819 Schottky</td><td class="n">2</td><td>Flyback: solenoid bondho holer spike ghuriye dey</td></tr>
-        <tr><td>D3</td><td>1N5819 Schottky</td><td class="n">1</td><td>Buck 5 V → ESP; ulta dike current jete dey na</td></tr>
-        <tr><td>D5</td><td>12 V zener (BZX55C12)</td><td class="n">1</td><td>Gate voltage 12 V-e atke rakhe</td></tr>
-        <tr><td>R1, R2, R15</td><td>220 Ω</td><td class="n">3</td><td>Optocoupler LED current</td></tr>
-        <tr><td>R3, R4</td><td>4.7 kΩ</td><td class="n">2</td><td>Q1 / Q2 gate pull-down: signal na thakle off rakhe</td></tr>
-        <tr><td>R13</td><td>4.7 kΩ</td><td class="n">1</td><td>Q3 gate pull-up: signal na thakle off rakhe</td></tr>
-        <tr><td>R14</td><td>2.2 kΩ</td><td class="n">1</td><td>Q3 gate drive</td></tr>
-        <tr><td>R9</td><td>1 kΩ</td><td class="n">1</td><td>VSW theke 12 V gate rail</td></tr>
-        <tr><td>R12</td><td>15 kΩ (1 %)</td><td class="n">1</td><td>Self-test: Q3 off thakleo VSW-te chhoto test voltage dey</td></tr>
-        <tr><td>R5, R10</td><td>22 kΩ (1 %)</td><td class="n">2</td><td>VBAT / VSW mapar divider (÷ 11), upor-er resistor</td></tr>
-        <tr><td>R6, R11</td><td>2.2 kΩ (1 %)</td><td class="n">2</td><td>Divider-er nicher resistor</td></tr>
-        <tr><td>R7, R8</td><td>3.3 kΩ</td><td class="n">2</td><td>LED current</td></tr>
-        <tr><td>LED1, LED2</td><td>Red LED 3 mm</td><td class="n">2</td><td>Solenoid chalu thakle jole</td></tr>
-        <tr><td>C3, C4, C5</td><td>100 nF ceramic</td><td class="n">3</td><td>ADC ar gate rail filter</td></tr>
+        <tr><td>U2–U7</td><td>PC817 optocoupler, DIP-4</td><td class="n">6</td><td>Logic ar power side-er majhe alo diye signal: ARM, FIRE 1, FIRE 2, SCL, SDA out, SDA in</td></tr>
+        <tr><td>U9</td><td>ADS1115 module (GY-ADS1115) + 1×10 female header</td><td class="n">1</td><td>Power side-e 4 ta voltage mape</td></tr>
+        <tr><td>U8</td><td>LP2950-3.3 LDO, TO-92</td><td class="n">1</td><td>Battery theke ADS1115-er 3.3 V</td></tr>
+        <tr><td>D1, D2</td><td>UF5408 ultrafast, 3 A 1000 V</td><td class="n">2</td><td>Flyback; leak kom, tai khola tar dhora jay</td></tr>
+        <tr><td>D3</td><td>1N5819 Schottky</td><td class="n">1</td><td>Logic 5 V input-e ulta current atkay</td></tr>
+        <tr><td>D5 · D6 · D7</td><td>Zener 12 V · 15 V · 20 V, 0.5 W</td><td class="n">3</td><td>Gate rail · Q3 gate clamp · LDO input clamp</td></tr>
+        <tr><td>R1, R2, R15</td><td>150 Ω</td><td class="n">3</td><td>FIRE / ARM opto LED current</td></tr>
+        <tr><td>R16, R17</td><td>220 Ω</td><td class="n">2</td><td>I²C opto LED current</td></tr>
+        <tr><td>R3, R4</td><td>4.7 kΩ</td><td class="n">2</td><td>Q1 / Q2 gate pull-down</td></tr>
+        <tr><td>R13 · R14</td><td>4.7 kΩ · 1 kΩ</td><td class="n">2</td><td>Q3 gate pull-up · gate drive</td></tr>
+        <tr><td>R9</td><td>680 Ω</td><td class="n">1</td><td>VSW theke 12 V gate rail</td></tr>
+        <tr><td>R7, R8</td><td>10 kΩ</td><td class="n">2</td><td>LED1 / LED2 current</td></tr>
+        <tr><td>R12</td><td>68 kΩ 1 %</td><td class="n">1</td><td>Self-test current, Q3 off thakleo</td></tr>
+        <tr><td>R5 R10 R22 R24</td><td>200 kΩ 1 %</td><td class="n">4</td><td>Divider upor (÷ 11)</td></tr>
+        <tr><td>R6 R11 R23 R25</td><td>20 kΩ 1 %</td><td class="n">4</td><td>Divider nich</td></tr>
+        <tr><td>R18 · R19</td><td>1 kΩ · 6.8 kΩ</td><td class="n">2</td><td>U7 LED · GPIO7 pull-up</td></tr>
+        <tr><td>R20, R21</td><td>10 kΩ</td><td class="n">2</td><td>I²C pull-up, power side</td></tr>
+        <tr><td>R26</td><td>1 kΩ</td><td class="n">1</td><td>LDO input-er current limit</td></tr>
+        <tr><td>C3 C4 C5 C6 C7 C11</td><td>100 nF ceramic</td><td class="n">6</td><td>Divider filter · gate rail · Q3 hot-plug</td></tr>
+        <tr><td>C8, C9</td><td>10 µF 35 V electrolytic</td><td class="n">2</td><td>LDO input / output</td></tr>
+        <tr><td>LED1, LED2</td><td>Red LED 3 mm</td><td class="n">2</td><td>Fire MOSFET-er gate on thakle jole</td></tr>
         <tr><td>J2, J3</td><td>Screw terminal 2-pin 5.08 mm</td><td class="n">2</td><td>Solenoid 1 / 2</td></tr>
-        <tr><td>J4</td><td>Screw terminal 2-pin 5.08 mm</td><td class="n">1</td><td>Buck 5 V input (ESP power)</td></tr>
+        <tr><td>J4</td><td>Screw terminal 2-pin 5.08 mm</td><td class="n">1</td><td>Logic 5 V input (ESP power)</td></tr>
         <tr><td>U1</td><td>ESP32-C3 SuperMini + 2 × 1×8 female header</td><td class="n">1</td><td>Controller, USB diye Jetson</td></tr>
-        <tr><td>H1–H4</td><td>M3 hole</td><td class="n">4</td><td>Mounting</td></tr>
+        <tr><td>H1–H6</td><td>M3 hole</td><td class="n">6</td><td>Mounting</td></tr>
       </tbody>
     </table>
   </div>
 
   <h2 id="explain">Protita part: kn ache, value kivabe, na thakle ki hoto</h2>
-  <p>Shob hishab full battery (16.8 V) ar solenoid 15 Ω dhore. Jekhane low battery lage shekhane 13.2 V. Solenoid-er inductance datasheet-e nai, 30 mH dhora.</p>
+  <p>Shob hishab full battery (16.8 V) ar solenoid 15 Ω dhore; jekhane low battery lage shekhane 13.2 V. Simulation-er number gulo <code>kicad/simulation</code> theke. Solenoid-er inductance plunger-er jaygar upor nirbhor kore: baire 25 mH, bhitore 75 mH dhora.</p>
   <nav class="jump" aria-label="Part group">
-    <a href="#mosfet2">Dui rokom MOSFET</a><a href="#g-power">Battery input</a><a href="#g-arm">ARM switch</a><a href="#g-fire">Fire switch</a><a href="#g-rail">12 V gate rail</a><a href="#g-fly">Flyback, LED</a><a href="#g-sense">Mapa, self-test</a><a href="#g-esp">ESP, buck</a><a href="#g-board">Board</a>
+    <a href="#mosfet2">MOSFET, Rds(on)</a><a href="#g-iso">Isolation</a><a href="#g-power">Battery input</a><a href="#g-arm">ARM switch</a><a href="#g-fire">Fire switch</a><a href="#g-rail">12 V gate rail</a><a href="#g-fly">Flyback, LED</a><a href="#g-sense">Mapa, self-test</a><a href="#g-esp">ESP</a><a href="#g-board">Board, firmware</a>
   </nav>
 
   <section class="grp" id="mosfet2">
-    <h3>Dui rokom MOSFET kn?</h3>
-    <p class="wide">MOSFET on hoy gate ar source-er <b>parthokko</b> diye, gate-er nijer voltage diye na. N-channel on hote gate-ke source-er <b>upore</b> ~10 V nite hoy. P-channel on hote gate-ke source-er <b>niche</b> ~10 V namate hoy. Tai kon dike bosche tar upor type thik hoy.</p>
+    <h3>Dui rokom MOSFET, ar koto voltage-e koto Rds(on)</h3>
+    <p class="wide">MOSFET on hoy gate ar source-er <b>parthokko</b> (V<sub>gs</sub>) diye. N-channel on hote gate-ke source-er <b>upore</b> ~10 V nite hoy, P-channel-e source-er <b>niche</b>. − dike source 0 V, tai N-channel (Q1, Q2) 12 V rail diyei on. + dike source battery-te, tai P-channel (Q3) gate-ke shudhu niche tanlei on.</p>
     <div class="tablebox">
       <table>
-        <thead><tr><th>Kothay</th><th>Source koto V-e</th><th>N-channel dile gate lagbe</th><th>P-channel dile gate lagbe</th><th>Ja nisi</th></tr></thead>
+        <thead><tr><th>MOSFET</th><th>V<sub>gs</sub> 16.8 V-e</th><th>V<sub>gs</sub> 13.2 V-e</th><th>Datasheet R<sub>ds(on)</sub> max</th><th>Sim drop, 1.11 A</th><th>Gorom</th><th>V<sub>gs</sub> limit</th></tr></thead>
         <tbody>
-          <tr><td>− dik (Q1, Q2)</td><td>0 V (GND)</td><td>0 + 12 = 12 V. Board-e ache</td><td>0 − 10 = −10 V. Board-e negative voltage nai</td><td>N-channel IRLZ44N</td></tr>
-          <tr><td>+ dik (Q3)</td><td>16.8 V (battery)</td><td>16.8 + 10 = 26.8 V. Board-e eto voltage nai, alada driver IC lagto</td><td>16.8 − 11.4 = 5.4 V. Shudhu GND-er dike tanlei hoy</td><td>P-channel IRF4905</td></tr>
+          <tr><td>Q1, Q2 IRLZ44N</td><td>11.9 V</td><td>10.8 V</td><td>22 mΩ @ 10 V (25 mΩ @ 5 V)</td><td>23.5 mV → 21 mΩ</td><td>26 mW</td><td>±16 V; rail 12 V</td></tr>
+          <tr><td>Q3 IRF4905</td><td>−13.8 V</td><td>−10.8 V</td><td>20 mΩ @ −10 V</td><td>19.8 mV → 18 mΩ</td><td>22 mW (dui solenoid-e 87 mW)</td><td>±20 V; D6 −15 V-e atkay</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="wide">N-channel eki dame kom resistance dey, tai jekhane shombhob (− dik) N. + dike P nile ekta optocoupler ar duita resistor diyei kaj hoy.</p>
+    <p class="wide">Dui MOSFET-i purapuri on (datasheet-er test point-er upore V<sub>gs</sub>), heatsink lage na. 12 V-e (mora battery) Q3 −9.8 V pay, tao on; kintu firmware 14.4 V-er niche ARM-i kore na.</p>
+  </section>
+
+  <section class="grp" id="g-iso">
+    <h3>Isolation: GNDL ar GNDP</h3>
+    <article class="part"><header><span class="ref">GNDL · GNDP</span><span class="pn">duita alada ground plane</span></header><dl>
+      <dt>Kaj</dt><dd>ESP32 (GNDL) ar battery (GNDP)-r majhe kono tamar jog nai. Board-er majhe 6.2 mm chowra channel-e kono copper nei; shudhu chhoyta PC817 oi channel-er upor bose.</dd>
+      <dt>Kn</dt><dd>v3-e ESP32-er GND ar battery − ek chhilo, tai "opto isolation" shudhu nam-e chhilo. Ekhon MOSFET fete gele ba solenoid-er tar short hole battery voltage ESP ar Jetson-e pouchay na.</dd>
+      <dt>Sim</dt><dd>GNDL-ke 1 GΩ ∥ 10 pF diye GNDP-r shathe dhore, fire-er shomoy isolation diye current 1 µA-r kom.</dd>
+      <dt>Shorto</dt><dd>Logic 5 V (J4 ba USB) ar battery − kothao ek kora jabe na. Jetson jodi eki battery-te chole, tobe ESP-er 5 V isolated DC-DC theke dao.</dd>
+    </dl></article>
+    <article class="part"><header><span class="ref">U5 · U6 · U7<br>R16 · R17 · R18 · R19 · R20 · R21</span><span class="pn">opto I²C · 220 Ω · 1 kΩ · 6.8 kΩ · 10 kΩ</span></header><dl>
+      <dt>Kaj</dt><dd>ADS1115 power side-e, ESP logic side-e. GPIO5 → U5 SCL tane, GPIO6 → U6 SDA tane. ADS SDA niche tanle R18 diye U7-er LED jole, U7 GPIO7 niche tane: eibhabe uttor ferot ashe.</dd>
+      <dt>Ulta</dt><dd>GPIO HIGH mane line LOW (LED jole, transistor tane). Firmware eta mathay rekhe bit-bang kore.</dd>
+      <dt>Speed</dt><dd>Opto dhire: sim-e shob kharap corner-e (CTR 50 %, 75 pF) shobcheye dhir edge 142 µs. Tai half-bit 500 µs, ~1 kHz I²C. Ekta reading-e kichu ms lage, eta jothesto.</dd>
+      <dt>R18 1 kΩ</dt><dd>U7 LED ~1.9 mA. ADS-ke mot 2.5 mA sink korte hoy, ADS1115 3 mA-e 0.4 V porjonto pare; sim-e SDA low 0.25 V.</dd>
+      <dt>R19 6.8 kΩ</dt><dd>GPIO7 pull-up 0.49 mA. U7 CTR 50 %-eo ~1 mA tante pare, tai thik LOW hoy. Boro dile (47 kΩ) rise khub dhir.</dd>
+      <dt>R20 · R21</dt><dd>SCL/SDA pull-up 3.3 V-e (module-er nijer 10 kΩ-er shathe 5 kΩ). U5/U6 tanle 0.66 mA.</dd>
+    </dl></article>
   </section>
 
   <section class="grp" id="g-power">
     <h3>Battery input</h3>
     <article class="part"><header><span class="ref">J1</span><span class="pn">XT60PW-M connector</span></header><dl>
-      <dt>Kaj</dt><dd>4S LiPo-r tar lagar jayga. Chabi kata, tai ulta dhoke na.</dd>
-      <dt>Kn eta</dt><dd>30 A porjonto shoy, board-e lage 2.24 A. PW mane PCB-te shoyano (right-angle).</dd>
-      <dt>Na thakle</dt><dd>Tar sorasori solder korte hoto. Ulta lagle C1 fete jete pare ar TVS short-er moto current tane.</dd>
+      <dt>Kaj</dt><dd>4S LiPo-r tar lagar jayga, board-er dan kinare. Chabi kata, tai ulta dhoke na.</dd>
+      <dt>Kn eta</dt><dd>30 A porjonto shoy, board-e lage shorbochcho 2.2 A (dui solenoid ekshathe).</dd>
     </dl></article>
-    <article class="part"><header><span class="ref">F1</span><span class="pn">RUEF300 PTC fuse · 3 A hold, 6 A trip, 30 V</span></header><dl>
-      <dt>Kaj</dt><dd>Board-e short hole garom hoye current komiye dey. Thanda hole nije thik hoy, bodlate hoy na.</dd>
-      <dt>Value</dt><dd><code>I_max = 2 × VBAT / R_sol = 2 × 16.8 / 15 = 2.24 A</code> (dui solenoid ekshathe). Eta hold current 3 A-er niche thaka chai.</dd>
-      <dt>Kom hole</dt><dd>1.85 A hold nile dui solenoid ekshathe dile trip korte pare. Garom hull-e hold current aro kome.</dd>
-      <dt>Beshi hole</dt><dd>5 A hold nile short-e trip korte deri, 1.2 mm track (≈ 2.7 A) age garom hoy.</dd>
-      <dt>Na thakle</dt><dd>Short hole LiPo shoto ampere dey: track pure, agun-er bhoy.</dd>
-      <dt>Mone rekho</dt><dd>PTC dhire kaj kore (second-er hisab) ar 100 A porjonto shoy. Battery-r dead short-er jonno main fuse alada lagbe.</dd>
+    <article class="part"><header><span class="ref">F2</span><span class="pn">5 A fast-acting 5×20 mm ceramic fuse</span></header><dl>
+      <dt>Kaj</dt><dd>Battery-r dead short-e (shoto ampere) milisecond-e line kete dey.</dd>
+      <dt>Kn lage</dt><dd>F1 PTC shorbochcho 40 A porjonto kaje nirapod; LiPo short-e er cheye onek beshi dey. v3-e eta chhilo na.</dd>
+      <dt>Value</dt><dd>Shadharon current 2.2 A, 5 A-er onek niche. Overload (5–15 A) PTC age dhore, boro short fuse. Ceramic (bali bhora) body, glass na: boro current-e fete na.</dd>
+      <dt>Hot-plug</dt><dd>Battery lagale C1 charge hote sim-e 95 A peak, kintu matro kichu µs: shokti <code>½ C V² ≈ 66 mJ</code>, fuse jole na.</dd>
+    </dl></article>
+    <article class="part"><header><span class="ref">F1</span><span class="pn">RUEF300 PTC · 3 A hold, 5.1 A trip, 30 V, 40 A max</span></header><dl>
+      <dt>Kaj</dt><dd>Overload-e (jemon armed obosthay SOL output short) garom hoye current komay, thanda hole nije thik hoy.</dd>
+      <dt>Value</dt><dd><code>I = 2 × 16.8 / 15 = 2.24 A</code> &lt; 3 A hold. Garom hull-e hold current kome, tai 1.85 A-er PTC nile dui solenoid ekshathe trip korte pare.</dd>
+      <dt>Na thakle</dt><dd>Majhari overload-e fuse dhire jole, track ar MOSFET aage garom hoy.</dd>
     </dl></article>
     <article class="part"><header><span class="ref">C1</span><span class="pn">470 µF 35 V electrolytic</span></header><dl>
       <dt>Kaj</dt><dd>Current hothat bodlale battery tar-er inductance voltage laf dey. C1 sheta sokhe.</dd>
-      <dt>Value</dt><dd><code>ΔV = I × √(L_tar / C)</code>. 1 m tar ≈ 1 µH. C1 thakle <code>1.11 × √(1µ / 470µ) = 0.05 V</code>. Na thakle (shudhu ~1 nF) <code>1.11 × √(1µ / 1n) = 35 V</code>.</dd>
-      <dt>Voltage</dt><dd>35 V ≥ 2 × 16.8 V. TVS-er 27.7 V clamp-eo thake.</dd>
-      <dt>Kom hole</dt><dd>10 µF: <code>ΔV = 0.35 V</code>. Chole, kintu ADC reading kape.</dd>
-      <dt>Beshi hole</dt><dd>4700 µF: battery laganor shomoy boro spark, jayga beshi.</dd>
-      <dt>Polarity</dt><dd>Lomba pa +. Ulta lagale fete jay.</dd>
+      <dt>Value</dt><dd><code>ΔV = I × √(L_tar / C)</code>, 1 m tar ≈ 1 µH: <code>1.11 × √(1µ / 470µ) = 0.05 V</code>. Na thakle (~1 nF) <code>≈ 35 V</code>. Sim-e fire-er shomoy VBAT 16.71 V porjonto name.</dd>
+      <dt>Voltage</dt><dd>35 V rating; sim-e boro spike-e TVS 33.9 V-e atkay, tai niche thake.</dd>
     </dl></article>
-    <article class="part"><header><span class="ref">D4</span><span class="pn">P6KE20A TVS diode</span></header><dl>
-      <dt>Kaj</dt><dd>Battery line-e 20 V-er upor-er spike nije kheye fele.</dd>
-      <dt>Value</dt><dd>Duita shorto: <code>V_standoff 17.1 V ≥ 16.8 V</code> (full battery-te chup thake) ar <code>V_clamp 27.7 V &lt; 35 V</code> (C1, optocoupler-er limit).</dd>
-      <dt>Kom hole</dt><dd>P6KE15A (12.8 V): full battery-tei current tane, garom hoye pure.</dd>
-      <dt>Beshi hole</dt><dd>P6KE33A (clamp 45.7 V): C1 ar optocoupler-er 35 V limit par hoye jay.</dd>
-      <dt>Na thakle</dt><dd>Lomba tar ba thruster-er spike sorasori MOSFET ar C1-e pore.</dd>
+    <article class="part"><header><span class="ref">D4</span><span class="pn">P6KE22A TVS diode</span></header><dl>
+      <dt>Kaj</dt><dd>Battery line-e spike nije kheye fele.</dd>
+      <dt>Kn 22A</dt><dd>v3-er P6KE20A-er standoff 17.1 V, full 4S 16.8 V-er khub kache: garom hole leak kore. P6KE22A standoff 18.8 V, breakdown 20.9 V-er upore.</dd>
+      <dt>Clamp</dt><dd>Sim-e 33.9 V: C1 (35 V), MOSFET (55 V) ar LDO (D7 diye 20 V) shob nirapod.</dd>
     </dl></article>
   </section>
 
   <section class="grp" id="g-arm">
     <h3>ARM switch (+ dik)</h3>
     <article class="part"><header><span class="ref">Q3</span><span class="pn">IRF4905 P-MOSFET · 55 V, 74 A, 20 mΩ</span></header><dl>
-      <dt>Kaj</dt><dd>+ line-er main switch. Fire sequence chhara shob shomoy OFF.</dd>
-      <dt>Value</dt><dd><code>P = I² × R_ds = 2.24² × 0.02 = 0.10 W</code>, heatsink lage na. 55 V rating spike clamp 27.7 V-er 2 gun.</dd>
-      <dt>Na thakle</dt><dd>Q1 ba Q2 short hole solenoid sorasori battery-te lege thake. Etai v2-er durbolota chhilo.</dd>
+      <dt>Kaj</dt><dd>+ line-er main switch. ARM window (default 10 s) chhara shob shomoy OFF.</dd>
+      <dt>Na thakle</dt><dd>Q1 ba Q2 short hole solenoid sorasori battery-te lege thakto.</dd>
     </dl></article>
-    <article class="part"><header><span class="ref">R13 · R14</span><span class="pn">4.7 kΩ · 2.2 kΩ</span></header><dl>
-      <dt>Kaj</dt><dd>R13 gate-ke source-er shathe bedhe Q3 OFF rakhe. U4 on hole R14 diye gate niche name, Q3 ON.</dd>
-      <dt>Value</dt><dd><code>V_gs = −VBAT × R13 / (R13 + R14) = −16.8 × 4.7 / 6.9 = −11.4 V</code> (13.2 V-e −9.0 V). Purapuri on hote 6–10 V lage, shorbochcho 20 V.</dd>
-      <dt>Spike-e</dt><dd><code>27.7 × 0.68 = 18.9 V &lt; 20 V</code>. R14 na thakle spike-e gate-e 27.7 V porto, gate nosto hoto.</dd>
-      <dt>Opto current</dt><dd><code>I = VBAT / (R13 + R14) = 16.8 / 6.9k = 2.4 mA</code>. PC817 dite pare 4.7 mA.</dd>
-      <dt>R13 boro hole</dt><dd>47 kΩ: gate theke GND-e 350 kΩ-er niche moisture leak-ei Q3 nije on hote shuru kore. 4.7 kΩ-te 35 kΩ porjonto shoy. <code>R_leak &gt; R13 × (VBAT / 2 − 1)</code></dd>
-      <dt>R13 chhoto hole</dt><dd>470 Ω: optocoupler-ke 24 mA tante hobe, pare na, Q3 on hobe na.</dd>
-      <dt>R14 boro hole</dt><dd>10 kΩ: <code>V_gs = −5.4 V</code>, Q3 adha on, garom hoy.</dd>
+    <article class="part"><header><span class="ref">R13 · R14 · D6</span><span class="pn">4.7 kΩ · 1 kΩ · 15 V zener</span></header><dl>
+      <dt>Kaj</dt><dd>R13 gate-ke source-er shathe bedhe Q3 OFF rakhe. U4 on hole R14 diye gate niche name.</dd>
+      <dt>Value</dt><dd><code>V_gs = −16.8 × 4.7 / 5.7 = −13.9 V</code> (sim −13.8 V; 13.2 V-e −10.8 V). v3-e 2.2 kΩ chhilo, 13.2 V-e matro −9.0 V.</dd>
+      <dt>D6</dt><dd>Spike-e (33.9 V) divider-e gate-e −28 V porto, limit 20 V. D6 −15 V-e atkay; sim-e −15.1 V.</dd>
+      <dt>Opto current</dt><dd><code>16.8 / 5.7k = 2.9 mA</code>; U4 dite pare ~5.5 mA.</dd>
+      <dt>R13 boro hole</dt><dd>47 kΩ: gate-e alpo moisture leak-ei Q3 nije on hote pare.</dd>
     </dl></article>
-    <article class="part"><header><span class="ref">U2 · U3 · U4<br>R1 · R2 · R15</span><span class="pn">PC817 optocoupler · 220 Ω</span></header><dl>
-      <dt>Kaj</dt><dd>ESP pin bhitorer LED jalay, alo porle onno pasher transistor on hoy. Majhe kono tar nai.</dd>
-      <dt>Value</dt><dd><code>I_LED = (3.3 − 1.2) / 220 = 9.5 mA</code>. Output dite pare <code>I_LED × CTR</code>; CTR kom pokkhe 50 %, tai 4.7 mA. Dorkar 2.4–2.5 mA.</dd>
-      <dt>Boro hole</dt><dd>1 kΩ: LED 2.1 mA, output 1 mA-r moto, gate 12 V-er bodole ~5 V pay.</dd>
-      <dt>Chhoto hole</dt><dd>47 Ω: 45 mA, ESP pin-er nirapod limit (~20 mA) par.</dd>
-      <dt>Na thakle</dt><dd>MOSFET-er drain–gate short hole 16.8 V sorasori ESP pin-e dhuke, USB diye Jetson-er dikeo jete pare.</dd>
-      <dt>Kinar shomoy</dt><dd>PC817C (CTR 200–400 %) nile margin beshi.</dd>
+    <article class="part"><header><span class="ref">C11</span><span class="pn">100 nF, Q3 gate–source</span></header><dl>
+      <dt>Kaj</dt><dd>Battery lagale VBAT µs-e 0 theke 16.8 V uthe. Q3-er bhitorer C<sub>gd</sub> gate-ke pichone rakhe, tai Q3 ek muhurto on hoye jeto. C11 gate-ke source-er shathe tene rakhe.</dd>
+      <dt>Sim</dt><dd>C11 shoho hot-plug-e V<sub>gs</sub> shudhu −0.35 V (on hoy ~−2 V-e). C11 chhara Q3 on hochhilo.</dd>
+    </dl></article>
+    <article class="part"><header><span class="ref">U2 · U3 · U4<br>R1 · R2 · R15</span><span class="pn">PC817 optocoupler · 150 Ω</span></header><dl>
+      <dt>Kaj</dt><dd>ESP pin bhitorer LED jalay, alo porle power side-er transistor on hoy.</dd>
+      <dt>Value</dt><dd>Sim-e LED 10.9 mA. PC817 CTR kom pokkhe 50 %, tai ~5.5 mA dite pare; dorkar 2.5–2.9 mA. v3-er 220 Ω-e margin kom chhilo.</dd>
+      <dt>Chhoto hole</dt><dd>47 Ω: 40 mA-er beshi, ESP pin-er limit par.</dd>
+      <dt>Kinar shomoy</dt><dd>PC817C (CTR 200–400 %) nile margin aro beshi.</dd>
     </dl></article>
   </section>
 
   <section class="grp" id="g-fire">
     <h3>Fire switch (− dik)</h3>
     <article class="part"><header><span class="ref">Q1 · Q2</span><span class="pn">IRLZ44N N-MOSFET · 55 V, 47 A, 22 mΩ</span></header><dl>
-      <dt>Kaj</dt><dd>Solenoid-er − tar GND-e jure dey. Etai fire.</dd>
-      <dt>Value</dt><dd><code>P = I² × R_ds = 1.11² × 0.022 = 27 mW</code>, thanda thake. Gate shorbochcho 16 V, tai 12 V rail.</dd>
-      <dt>Kom rating</dt><dd>30 V MOSFET (IRLB8721) dileo chole, kintu 27.7 V clamp theke margin matro 2 V.</dd>
+      <dt>Kaj</dt><dd>Solenoid-er − tar GNDP-te jure dey. Etai fire.</dd>
+      <dt>Value</dt><dd>Gate 11.9 V, drop 23.5 mV, <code>1.11² × 0.021 = 26 mW</code>. Gate shorbochcho 16 V, tai 12 V rail.</dd>
     </dl></article>
     <article class="part"><header><span class="ref">R3 · R4</span><span class="pn">4.7 kΩ gate pull-down</span></header><dl>
-      <dt>Kaj</dt><dd>Optocoupler off thakle gate-ke GND-e tene MOSFET OFF rakhe. Bondho korar shomoy gate-er charge ber kore.</dd>
-      <dt>Value</dt><dd>On obosthay <code>I = V_gate / R = 11.9 / 4.7k = 2.5 mA</code> (opto pare 4.7 mA). Bondho hote <code>τ = R × C_gate = 4.7k × 1.7 nF = 8 µs</code>.</dd>
-      <dt>Leak shoy</dt><dd>Gate 1 V-er niche rakhte <code>R_leak &gt; R × (12 / 1 − 1) = 52 kΩ</code>.</dd>
-      <dt>Boro hole</dt><dd>100 kΩ: 1.1 MΩ-er niche leak holei gate 1 V par (moisture-e durbol), bondho hote 170 µs.</dd>
-      <dt>Chhoto hole</dt><dd>470 Ω: opto <code>4.7 mA × 470 Ω = 2.2 V</code>-er beshi tulte pare na, MOSFET on hobe na.</dd>
+      <dt>Kaj</dt><dd>Opto off thakle gate-ke GNDP-te tene MOSFET OFF rakhe.</dd>
+      <dt>Value</dt><dd>On obosthay <code>11.9 / 4.7k = 2.5 mA</code>. Bondho hote <code>τ = 4.7k × 1.7 nF = 8 µs</code>. Gate 1 V-er niche rakhte leak <code>&gt; 52 kΩ</code> hote hobe.</dd>
+      <dt>Miller</dt><dd>ARM-er shomoy VSW laf dile drain–gate capacitance gate-e dhakka dey; sim-e shorbochcho 0.81 V, threshold-er (1 V min) niche.</dd>
       <dt>Na thakle</dt><dd>Gate bhashoman thake, nije nije on hote pare.</dd>
     </dl></article>
   </section>
 
   <section class="grp" id="g-rail">
     <h3>12 V gate rail</h3>
-    <article class="part"><header><span class="ref">R9 · D5 · C4</span><span class="pn">1 kΩ · 12 V zener · 100 nF</span></header><dl>
-      <dt>Kaj</dt><dd>VSW theke 12 V banay, Q1/Q2-er gate chalanor jonno. VSW theke neya bole Q3 off thakle gate-e jor-i nai: eta ditiyo tala.</dd>
-      <dt>Zener kn</dt><dd>IRLZ44N-er gate 16 V-er beshi shoy na. Battery 16.8 V, spike-e 27.7 V.</dd>
-      <dt>Value</dt><dd><code>I_z = (VSW − 12) / R9 = (16.8 − 12) / 1k = 4.8 mA</code>, zener-e <code>12 × 4.8 mA = 58 mW</code> (limit 500 mW).</dd>
-      <dt>Low battery</dt><dd><code>rail = VSW × R3 / (R9 + R3) = 13.2 × 4.7 / 5.7 = 10.9 V</code>. Jothesto.</dd>
-      <dt>R9 boro hole</dt><dd>10 kΩ: <code>13.2 × 4.7 / 14.7 = 4.2 V</code>, gate durbol, MOSFET garom.</dd>
-      <dt>R9 chhoto hole</dt><dd>100 Ω: zener-e 48 mA = 0.58 W, limit par. Spike-e 157 mA, pure jay.</dd>
-      <dt>D5 na thakle</dt><dd>Gate-e 16.8 V ba beshi pore, gate futo hoye MOSFET short hoy.</dd>
-      <dt>C4</dt><dd>Rail-er noise komay. Gate on korte lage ~50 nC, C4-e ache <code>100 nF × 12 V = 1200 nC</code>.</dd>
+    <article class="part"><header><span class="ref">R9 · D5 · C4</span><span class="pn">680 Ω · 12 V zener · 100 nF</span></header><dl>
+      <dt>Kaj</dt><dd>VSW theke 12 V (VG) banay, U2/U3 eita diye Q1/Q2-er gate chalay. VSW theke neya bole Q3 off thakle gate-e jor-i nai: ditiyo tala.</dd>
+      <dt>Value</dt><dd><code>(16.8 − 12) / 680 = 7.1 mA</code>, zener-e 85 mW (limit 500 mW). 13.2 V-e fire-er shomoy VG 10.9 V. v3-er 1 kΩ-e low battery-te kom chhilo.</dd>
+      <dt>Spike-e</dt><dd><code>(33.9 − 12.4) / 680 = 32 mA</code>, zener-e 0.39 W, alpo shomoy; VG 12.4 V.</dd>
+      <dt>D5 na thakle</dt><dd>Gate-e 16.8 V ba beshi pore, IRLZ44N-er 16 V limit par.</dd>
     </dl></article>
   </section>
 
   <section class="grp" id="g-fly">
     <h3>Flyback diode ar LED</h3>
-    <article class="part"><header><span class="ref">D1 · D2</span><span class="pn">1N5819 Schottky · 40 V, 1 A</span></header><dl>
+    <article class="part"><header><span class="ref">D1 · D2</span><span class="pn">UF5408 ultrafast · 1000 V, 3 A</span></header><dl>
       <dt>Kaj</dt><dd>Coil current hothat thamte pare na. MOSFET bondho hole ei diode current-ke coil-ei ghurar rasta dey.</dd>
-      <dt>Value</dt><dd>Joma shokti <code>E = ½ × L × I² = ½ × 0.03 × 1.11² = 18 mJ</code>. Diode thakle drain peak <code>VBAT + V_f = 16.8 + 0.45 = 17.2 V</code>. Shesh hote <code>3 × L / R = 3 × 30 mH / 15 Ω = 6 ms</code>.</dd>
-      <dt>Rating</dt><dd>40 V &gt; 27.7 V clamp. 1 A gor, 25 A surge; ekhane 1.1 A matro 6 ms.</dd>
-      <dt>Na thakle</dt><dd>Voltage MOSFET-er 55 V limit porjonto uthe, protibar 18 mJ MOSFET-er upor pore. Dhire dhire nosto hoye short hoy.</dd>
-      <dt>Ulta lagale</dt><dd>Fire korlei diode sorasori short. Dag (band) + dike thakbe.</dd>
+      <dt>Value</dt><dd>Plunger bhitore <code>E = ½ × 0.075 × 1.11² = 46 mJ</code>. Drain peak sim-e 17.7 V (limit 55 V). <code>τ = L / R = 5 ms</code>, ~15 ms-e shesh.</dd>
+      <dt>Kn Schottky na</dt><dd>Self-test khola tar dhore D1N-er voltage diye. 1N5819 ulta dike leak kore (garom-e beshi), khola coil-o "ardhek lagano" dekhay: sim-e ratio 0.75. UF5408-e 0.0001 (70 °C-e 0.0024), poriskar "khola".</dd>
+      <dt>Ulta lagale</dt><dd>Fire korlei diode sorasori short. Band (cathode) VSW (+) dike.</dd>
     </dl></article>
-    <article class="part"><header><span class="ref">LED1 · LED2<br>R7 · R8</span><span class="pn">Red 3 mm · 3.3 kΩ</span></header><dl>
-      <dt>Kaj</dt><dd>VSW ar solenoid-er − er majhe lagano. Q3 ar fire MOSFET duitai on holei jole.</dd>
-      <dt>Value</dt><dd><code>I = (VBAT − V_LED) / R = (16.8 − 1.9) / 3.3k = 4.5 mA</code>. Resistor-e <code>I² × R = 67 mW</code>, ¼ W thik ache.</dd>
-      <dt>Chhoto hole</dt><dd>330 Ω: 45 mA, LED (max 20 mA) pure, resistor-e 0.67 W.</dd>
-      <dt>Boro hole</dt><dd>33 kΩ: 0.45 mA, prai dekha jay na.</dd>
-      <dt>Na thakle</dt><dd>Circuit thik-i cholbe, shudhu chokhe bujha jabe na.</dd>
+    <article class="part"><header><span class="ref">LED1 · LED2<br>R7 · R8</span><span class="pn">Red 3 mm · 10 kΩ</span></header><dl>
+      <dt>Kaj</dt><dd>Q1/Q2-er gate theke GNDP-te. Gate on holei jole, tai "fire MOSFET-e gate pouchese" dekhay.</dd>
+      <dt>Value</dt><dd><code>(11.9 − 1.9) / 10k = 1.0 mA</code> (sim 1.03 mA): dekha jay, ar gate drive-e matro 1 mA bhar.</dd>
+      <dt>Chhoto hole</dt><dd>1 kΩ: 10 mA, opto-r current shesh, gate voltage name.</dd>
     </dl></article>
   </section>
 
   <section class="grp" id="g-sense">
     <h3>Voltage mapa ar self-test</h3>
-    <article class="part"><header><span class="ref">R5 · R6 · C3<br>R10 · R11 · C5</span><span class="pn">22 kΩ · 2.2 kΩ · 100 nF</span></header><dl>
-      <dt>Kaj</dt><dd>Battery (VBAT) ar switch-er porer rail (VSW) ESP-er jonno chhoto kore. R5/R6/C3 → GPIO3, R10/R11/C5 → GPIO4.</dd>
-      <dt>Value</dt><dd><code>V_ADC = V × R6 / (R5 + R6) = V / 11</code>. 16.8 V → 1.53 V, 13.2 V → 1.20 V. ESP32-C3 bhalo mape ~2.5 V porjonto. Spike 27.7 V → 2.5 V, tao nirapod.</dd>
-      <dt>Ratio kom hole</dt><dd>÷ 4: 16.8 V → 4.2 V, ESP pin nosto.</dd>
-      <dt>Ratio beshi hole</dt><dd>÷ 50: 0.34 V, reading mota hoye jay.</dd>
-      <dt>Ohm boro hole</dt><dd>220k / 22k: current kom, kintu moisture leak-e reading beshi nore.</dd>
-      <dt>Ohm chhoto hole</dt><dd>2.2k / 220 Ω: 7 mA shob shomoy khoroch. Ekhon <code>16.8 / 24.2k = 0.69 mA</code>.</dd>
-      <dt>C3, C5</dt><dd><code>τ = (R5 ∥ R6) × C = 2 kΩ × 100 nF = 0.2 ms</code>, noise filter. 10 µF dile τ = 20 ms, firmware-er 4 ms opekkhay reading thik ashbe na.</dd>
-      <dt>Na thakle</dt><dd>Battery voltage jana jeto na: pulse limit, self-test, NO_POWER kichui hoto na.</dd>
+    <article class="part"><header><span class="ref">U9</span><span class="pn">ADS1115 module, 16-bit, 4 channel</span></header><dl>
+      <dt>Kaj</dt><dd>Power side-e boshe VBAT, VSW, D1N, D2N mape. ESP-er ADC-te power side-er voltage sorasori dile isolation thakto na.</dd>
+      <dt>Value</dt><dd>PGA ±2.048 V: <code>62.5 µV × 11 = 0.69 mV</code> battery-te ek step. Address 0x48 (ADDR GNDP-te).</dd>
+      <dt>Socket</dt><dd>1×10 female header-e bose, nicher chhoto part-er upor diye.</dd>
     </dl></article>
-    <article class="part"><header><span class="ref">R12</span><span class="pn">15 kΩ self-test resistor</span></header><dl>
-      <dt>Kaj</dt><dd>Q3 off thakleo VSW-te chhoto test voltage dey, jate nosto MOSFET dhora jay.</dd>
-      <dt>Value</dt><dd><code>r = (R10 + R11) / (R12 + R10 + R11) = 24.2 / 39.2 = 0.62</code>. Q1 short hole r ≈ 0, Q3 short hole r = 1. 0.62 majhe, tai duitai alada kora jay (limit 0.45 ar 0.80).</dd>
-      <dt>Test current</dt><dd><code>VBAT / R12 = 16.8 / 15k = 1.1 mA</code>. Solenoid norte shoto mA lage.</dd>
-      <dt>Chhoto hole</dt><dd>150 Ω: Q1 short hole solenoid-e 100 mA, R12-e 1.6 W.</dd>
-      <dt>Boro hole</dt><dd>1 MΩ: r = 0.02, "thik" ar "Q1 short" alada kora jay na.</dd>
-      <dt>Na thakle</dt><dd>Q3 off-e VSW = 0, tai fire MOSFET short holeo bujha jeto na.</dd>
+    <article class="part"><header><span class="ref">R5/R6 · R10/R11<br>R22/R23 · R24/R25<br>C3 · C5 · C6 · C7</span><span class="pn">200 kΩ / 20 kΩ 1 % · 100 nF</span></header><dl>
+      <dt>Kaj</dt><dd>Prottek node-ke ÷ 11 kore ADS-e dey: A0 VBAT, A1 VSW, A2 D1N, A3 D2N.</dd>
+      <dt>Value</dt><dd><code>20 / 220 = 1/11</code>: 16.8 V → 1.53 V. Spike 33.9 V-eo filter-er por sim-e 2.11 V, ADS-er 3.6 V limit-er niche.</dd>
+      <dt>Kn 200k</dt><dd>VBAT divider shob shomoy lagano: <code>16.8 / 220k = 76 µA</code> (v3-e 0.69 mA). Gain error CAL command thik kore; ratio-gulo-te common error kete jay.</dd>
+      <dt>Filter</dt><dd><code>τ = 18.2 kΩ × 100 nF = 1.8 ms</code>; firmware channel bodle 10 ms opekkha kore.</dd>
+    </dl></article>
+    <article class="part"><header><span class="ref">R12</span><span class="pn">68 kΩ 1 % self-test resistor</span></header><dl>
+      <dt>Kaj</dt><dd>Q3 off thakleo VSW-te chhoto test current dey, ja solenoid diye D1N/D2N-e jay. Tai MOSFET short, coil lagano ki na, shob dhora jay.</dd>
+      <dt>Value</dt><dd>VSW-er niche tin ta 220 kΩ path (VSW divider, dui coil + D1N/D2N divider): <code>73.3 / (68 + 73.3) = 0.52</code>, sim 0.51. Ek coil khola 0.60, duita khola 0.76, Q1 short 0.0002, Q3 short 1.00.</dd>
+      <dt>Test current</dt><dd><code>16.8 / 141k = 0.12 mA</code>; solenoid norte ~1 A lage.</dd>
+    </dl></article>
+    <article class="part"><header><span class="ref">U8 · R26 · D7<br>C8 · C9</span><span class="pn">LP2950-3.3 · 1 kΩ · 20 V zener · 10 µF</span></header><dl>
+      <dt>Kaj</dt><dd>Battery theke ADS1115 ar I²C pull-up-er 3.3 V (3V3P) banay, power side-ei.</dd>
+      <dt>Value</dt><dd>LP2950 input shorbochcho 30 V. R26 + D7 spike-e input 20 V-e atkay. C9 10 µF output-e stability-r jonno lage (datasheet ≥ 1 µF).</dd>
+      <dt>Pin</dt><dd>Flat mukh shamne: 1 OUT, 2 GND, 3 IN.</dd>
     </dl></article>
   </section>
 
   <section class="grp" id="g-esp">
-    <h3>ESP32 ar buck power</h3>
+    <h3>ESP32 ar logic power</h3>
     <article class="part"><header><span class="ref">U1</span><span class="pn">ESP32-C3 SuperMini, female header-e</span></header><dl>
-      <dt>Kaj</dt><dd>Jetson theke USB-te command ney, tinta optocoupler chalay, duita voltage mape.</dd>
-      <dt>Pin</dt><dd>GPIO1, GPIO0, GPIO10 output: boot-er shomoy egulo chup thake. GPIO3, GPIO4 mapar jonno (ADC1). GPIO2, 8, 9 (boot pin) ar 20, 21 (serial) eriye gesi.</dd>
-      <dt>Header kn</dt><dd>ESP nosto hole solder na khule bodlano jay.</dd>
+      <dt>Kaj</dt><dd>Jetson theke USB-te command ney, chhoyta opto chalay, ADS1115 pore.</dd>
+      <dt>Pin</dt><dd>GPIO1 FIRE 1, GPIO0 FIRE 2, GPIO10 ARM, GPIO5 SCL, GPIO6 SDA out, GPIO7 SDA in. Blue LED (GPIO8) armed thakle jole. Boot-er shomoy pin bhashle-o sim-e Q1 gate 0.26 V, Q3 −0.28 V: shob OFF.</dd>
     </dl></article>
     <article class="part"><header><span class="ref">J4 · D3</span><span class="pn">Screw terminal · 1N5819</span></header><dl>
-      <dt>Kaj</dt><dd>Buck-er 5 V ESP-er 5V pin-e dey.</dd>
-      <dt>Value</dt><dd><code>5.0 − 0.35 = 4.65 V</code> pouchay. ESP-er 3.3 V regulator-er lage ~3.6 V-er beshi.</dd>
-      <dt>D3 na thakle</dt><dd>Jetson-er USB 5 V buck-er output-e ulta dhuke. Buck-er tar ulta lagale ESP nosto hoy.</dd>
-      <dt>Mone rekho</dt><dd>D3 shudhu ek dik atkay. Buck on kintu Jetson off thakle buck-er 4.65 V USB tar diye Jetson-er port-e pouchate pare.</dd>
+      <dt>Kaj</dt><dd>Logic 5 V ESP-er 5V pin-e dey. D3 USB-er 5 V-ke J4-er dike jete dey na.</dd>
+      <dt>Mone rekho</dt><dd>J4-er GND = GNDL. Battery − er shathe jora jabe na.</dd>
     </dl></article>
   </section>
 
   <section class="grp" id="g-board">
-    <h3>Board nije</h3>
+    <h3>Board ar firmware</h3>
     <article class="part"><header><span class="ref">J2 · J3</span><span class="pn">Screw terminal 5.08 mm</span></header><dl>
-      <dt>Kaj</dt><dd>Solenoid-er dui tar. + pin VSW-te, − pin fire MOSFET-e. Tar dhokar mukh board-er baire.</dd>
+      <dt>Kaj</dt><dd>Solenoid-er dui tar. + pin VSW-te, − pin fire MOSFET-e (silkscreen-e + / − lekha). Tar dhokar mukh board-er dan kinare.</dd>
     </dl></article>
-    <article class="part"><header><span class="ref">Track</span><span class="pn">2.0 · 1.2 · 0.5 mm</span></header><dl>
-      <dt>Value</dt><dd><code>I ≈ 0.048 × ΔT^0.44 × A^0.725</code> (A = chowra × purutto, mil²). 10 °C garom-e 1.2 mm ≈ 2.7 A, 2.0 mm ≈ 4 A. Solenoid rasta 1.2 mm (lage 1.1 A), battery input 2.0 mm, signal 0.5 mm.</dd>
-      <dt>Chikon hole</dt><dd>0.3 mm ≈ 1 A: solenoid current-ei shimay pouche jay, short hole fuse-er age pure jete pare.</dd>
-    </dl></article>
-    <article class="part"><header><span class="ref">GND plane</span><span class="pn">Nicher pura copper</span></header><dl>
-      <dt>Kaj</dt><dd>Shob current-er ferar rasta. Alada GND track lage na, tai GND-er "line" khuje pawa jay na: pura nicher pith-i GND.</dd>
-      <dt>Na thakle</dt><dd>Chikon GND track-e voltage drop hoto, ESP-er mapa bhul ashto.</dd>
+    <article class="part"><header><span class="ref">Track</span><span class="pn">2.0 mm power · 0.35 mm signal</span></header><dl>
+      <dt>Value</dt><dd><code>I ≈ 0.048 × ΔT^0.44 × A^0.725</code> (A mil²): 10 °C garom-e 2.0 mm ≈ 4 A, lage 2.2 A. Signal 0.35 mm ≈ 1.1 A, lage mA.</dd>
     </dl></article>
     <article class="part"><header><span class="ref">Firmware</span><span class="pn">number gulo</span></header><dl>
-      <dt>Pulse limit</dt><dd><code>t_max = 1000 ms × (12 / VBAT)²</code> = 510 ms (16.8 V). Coil-er tap <code>V² / R × t</code>; datasheet 12 V-e 1 s dey, tai beshi voltage-e shomoy kom.</dd>
-      <dt>Q3 hold</dt><dd>Pulse-er por 30 ms. Coil current 6 ms-e shesh, tai Q3 khali rasta kate.</dd>
-      <dt>Heartbeat</dt><dd>2 s kono command na ashle nije DISARM.</dd>
+      <dt>Pulse</dt><dd>Default 200 ms, hard cap 500 ms. Pulse hardware timer bondho kore, main loop na. Duita pulse-er majhe kom pokkhe 300 ms.</dd>
+      <dt>ARM</dt><dd>ARM-er age self-test; pass na korle ARM hoy na. 10 s pore nije DISARM.</dd>
+      <dt>Battery</dt><dd>14.4 V-er niche ba 17.6 V-er upore ARM hoy na (vmin solenoid-er pull-in theke: sim-e 13.8 V-er niche plunger bondho-i hoy na).</dd>
+      <dt>Watchdog</dt><dd>2 s loop atke gele chip reboot, shob output LOW.</dd>
     </dl></article>
   </section>
 </div>
@@ -477,42 +509,48 @@ code{font-family:var(--mono);font-size:.84em;background:var(--card);border:1px s
 // ------------------------------------------------------------------ current-flow diagram (works without the 3D library)
 (function () {
   const $ = id => document.getElementById(id);
-  const FEED = ["p1", "p2", "p3a", "p3b", "p4a", "p4b"];
-  const TESTPATH = ["p1", "p2", "p3a", "r12", "p4b"];
+  const FEED = ["p1", "p2", "p2b", "p3a"];
+  const READ = ["divb", "divs", "sd1", "sd2", "ldo", "c5", "c6", "c7", "i5", "i6", "i7"];   // ESP reads the ADS1115 over the opto I2C
+  const ARMC = ["c0", "i4"];
   const CH = {
-    1: { load: ["p4c", "s1a", "s1b", "s1c", "g1", "g3"], ctrl: ["c1a", "c1b"], fly: "f1", sol: "sol1", q: "q1", u: "u2", d: "d1", pin: "GPIO1", name: "Q1", sn: "Solenoid 1", dn: "D1", un: "U2" },
-    2: { load: ["p4c", "p5", "s2a", "s2b", "s2c", "g2", "g1", "g3"], ctrl: ["c2a", "c2b"], fly: "f2", sol: "sol2", q: "q2", u: "u3", d: "d2", pin: "GPIO0", name: "Q2", sn: "Solenoid 2", dn: "D2", un: "U3" }
+    1: { load: ["p4b", "s1a", "s1b", "s1c", "g1", "g3"], coil: ["s1a", "s1b"], other: ["p5", "s2a", "s2b"], ctrl: ["c1", "i2"], fly: "f1", sol: "sol1", q: "q1", u: "u2", d: "d1", pin: "GPIO1", name: "Q1", sn: "Solenoid 1", dn: "D1", un: "U2", rn: "R1", node: "D1N" },
+    2: { load: ["p4b", "p5", "s2a", "s2b", "s2c", "g2", "g1", "g3"], coil: ["p5", "s2a", "s2b"], other: ["s1a", "s1b"], ctrl: ["c2", "i3"], fly: "f2", sol: "sol2", q: "q2", u: "u3", d: "d2", pin: "GPIO0", name: "Q2", sn: "Solenoid 2", dn: "D2", un: "U3", rn: "R2", node: "D2N" }
   };
-  const idle = c => ({ test: TESTPATH.concat(["divs", "divb"]), live: [], ctl: [], on: [] });
+  const TEST = FEED.concat(["r12", "p4b", "p5", "s1a", "s1b", "s2a", "s2b"], READ);
+  const idle = () => ({ test: TEST, live: [], ctl: ["u5", "u6", "u7"], on: [] });
   const STEPS = {
-    idle: c => Object.assign(idle(c), {
-      title: "Battery lagano ache, kichu fire hocche na",
-      body: "Q3 ar " + c.name + " duitai OFF, tai solenoid-e current nai. Shudhu R12 (15k) diye ekta chhoto test current VSW rail-e jay. ESP32 VBAT ar VSW mepe dekhe ratio 0.62 ache kina. Thik thakle bujhe kono MOSFET leak korche na.",
-      stats: [["Solenoid current", "0 A"], ["VSW", "10.4 V (test level)"], ["VSW ÷ VBAT", "0.62 = thik ache"]] }),
-    arm: c => ({ test: FEED.concat(["divs", "divb"]), ctrl: ["c0a", "c0b"], live: ["q3"], ctl: ["u4"], on: ["q3"],
-      title: "FIRE command ashle age Q3 on hoy",
-      body: "ESP32 GPIO10 → 220 Ω → optocoupler U4. U4 Q3-er gate niche tane, Q3 ON hoy, VSW = battery voltage. " + c.name + " ekhono OFF, tai solenoid-e current nai. ESP32 4 ms pore mepe dekhe VSW shotti esheche kina; na ashle FIRE batil (HS_OPEN).",
-      stats: [["Solenoid current", "0 A"], ["VSW", "16.8 V"], ["VSW ÷ VBAT", "1.00"], ["Q3 gate drive", "11.4 V"]] }),
-    fire: c => ({ main: FEED.concat(c.load), ctrl: ["c0a", "c0b"].concat(c.ctrl), test: ["divs", "divb"], live: ["q3", c.q, c.sol], ctl: ["u4", c.u], on: ["q3", c.q],
+    idle: c => Object.assign(idle(), {
+      title: "Battery lagano, DISARMED: kichu fire hobe na",
+      body: "Q3, Q1, Q2 tinta-i OFF. Shudhu R12 (68k) diye ekta chhoto test current VSW-te jay, sekhan theke dui solenoid diye D1N/D2N-e. ADS1115 char ta voltage mape, ESP32 opto I²C diye pore. VSW ÷ VBAT 0.51 ar D1N ÷ VSW 1.00 hole bujhe kono MOSFET leak korche na ar dui solenoid-i lagano.",
+      stats: [["Solenoid current", "0 A (test 0.04 mA)"], ["VSW", "8.5 V (test level)"], ["VSW ÷ VBAT", "0.51 = thik"], [c.node + " ÷ VSW", "1.00 = coil lagano"]] }),
+    arm: c => ({ test: FEED.concat(["p4a", "p4b", "p5", "s1a", "s1b", "s2a", "s2b"], READ), ctrl: ARMC, live: ["q3"], ctl: ["u4", "u5", "u6", "u7"], on: ["q3"],
+      title: "ARM: self-test pass hole Q3 ON",
+      body: "ESP32 age self-test chalay. Pass hole GPIO10 → R15 150 Ω → U4. U4 Q3-er gate R14 diye niche tane, Q3 ON, VSW = battery. 30 ms pore ESP mape VSW shotti VBAT-e uthlo kina; na uthle ARM batil. ARM window 10 s, tarpor nije DISARM. Ekhono " + c.name + " OFF, solenoid-e current nai.",
+      stats: [["Solenoid current", "0 A"], ["VSW", "16.8 V"], ["VSW ÷ VBAT", "1.00 (≥ 0.95 lage)"], ["Q3 V_gs", "−13.8 V (D6 −15 V-e atkay)"]] }),
+    fire: c => ({ main: FEED.concat(["p4a"], c.load), ctrl: ARMC.concat(c.ctrl), test: READ, live: ["q3", c.q, c.sol], ctl: ["u4", c.u, "u5", "u6", "u7"], on: ["q3", c.q],
       title: c.sn + " chalu: duita switch-i ON",
-      body: "ESP32 " + c.pin + " → 220 Ω → optocoupler " + c.un + " → " + c.name + " gate. Ekhon pura rasta khola: battery + → XT60 → F1 → Q3 → " + c.sn + " → " + c.name + " → GND plane → battery −. LED-o jole. Pulse hardware timer diye shesh hoy.",
-      stats: [["Solenoid current", "1.11 A (13.2 V-e 0.87 A)"], [c.name + " gate", "11.9 V"], [c.name + "-er upor drop", "22 mV"], ["Pulse", "250 ms default, max 510 ms"]] }),
-    fly: c => ({ fly: [c.fly], ctrl: ["c0a", "c0b"], test: FEED.concat(["divs", "divb"]), live: ["q3"], ctl: ["u4"], flyn: [c.d, c.sol], on: ["q3"],
+      body: "ESP32 " + c.pin + " → " + c.rn + " 150 Ω → " + c.un + " → 12 V rail theke " + c.name + " gate. Pura rasta khola: battery + → XT60 → F2 → F1 → Q3 → " + c.sn + " → " + c.name + " → GNDP → battery −. Pulse ESP-er hardware timer shesh kore. Pulse cholakalin ESP " + c.node + " mape: niche na namle MOSFET switch korche na, error dey.",
+      stats: [["Solenoid current", "1.11 A (14.8 V-e 0.98 A)"], [c.name + " gate", "11.9 V"], ["Drop", c.name + " 23 mV · Q3 20 mV"], ["Plunger bondho", "42 ms (14.8 V-e 76 ms)"], ["Pulse", "200 ms default, max 500 ms"]] }),
+    fly: c => ({ fly: [c.fly], ctrl: ARMC, test: FEED.concat(["p4a"], READ), live: ["q3"], ctl: ["u4", "u5", "u6", "u7"], flyn: [c.d, c.sol], on: ["q3"],
       title: "Pulse shesh: " + c.name + " OFF, current " + c.dn + " diye ghure",
-      body: "Solenoid coil hothat thamte chay na. Jome thaka current " + c.dn + " (flyback diode) diye solenoid-ei ghure shesh hoy, tai " + c.name + "-er upor boro spike pore na. Q3 aro 30 ms ON thake.",
-      stats: [["Solenoid current", "1.1 A → 0, ~6 ms"], [c.name + " drain peak", "17.2 V (limit 55 V)"]] }),
-    off: c => Object.assign(idle(c), {
-      title: "30 ms pore Q3-o OFF",
-      body: "Abar duita switch-i bondho. ESP32 abar ratio mape: 0.62 fire ashle sob thik. Pulse-er shomoy kono MOSFET nosto hole eikhane dhora pore, board nije DISARM hoy.",
-      stats: [["Solenoid current", "0 A"], ["VSW ÷ VBAT", "abar 0.62"], ["Porer fire", "2 s cooldown-er por"]] }),
-    fq: c => ({ test: TESTPATH.concat(c.load), live: [], ctl: [], bad: [c.q], on: [],
+      body: "Coil-er current hothat thamte pare na. Jome thaka current " + c.dn + " (UF5408) diye solenoid-ei ghure shesh hoy, tai " + c.name + "-er drain-e boro spike pore na. Q3 ARM window shesh na howa porjonto ON thake; porer pulse kom pokkhe 300 ms pore.",
+      stats: [["Solenoid current", "1.1 A → 0, ~15 ms"], [c.name + " drain peak", "17.7 V (limit 55 V)"]] }),
+    off: c => Object.assign(idle(), {
+      title: "DISARM ba 10 s pore Q3 OFF",
+      body: "Abar tin switch-i bondho. VSW abar R12-er test level-e fere, ratio 0.51. Armed thakakalin ESP protite 500 ms-e VSW mepe chhilo: VSW hothat porle (jemon SOL output short) nije DISARM kore.",
+      stats: [["Solenoid current", "0 A"], ["VSW ÷ VBAT", "abar 0.51"]] }),
+    fq: c => ({ test: FEED.concat(["r12", "p4b"], c.coil, c.load.filter(w => !c.coil.includes(w) && w !== "p4b"), READ), live: [], ctl: ["u5", "u6", "u7"], bad: [c.q], on: [],
       title: c.name + " nosto hoye short hole",
-      body: "Relay chhara MOSFET-er eitai shobcheye boro bhoy: short hoye atke jawa. Ekhane Q3 OFF, tai solenoid-e shudhu R12-er 1.1 mA test current jay, solenoid nore na. VSW 0 V-e neme jay, ESP32 150 ms-er moddhe FAULT LS_LEAK dey, ARM ar FIRE duitai bondho kore.",
-      stats: [["Solenoid current", "1.1 mA (nore na)"], ["VSW ÷ VBAT", "0.00 → FAULT LS_LEAK"]] }),
-    fq3: c => ({ test: FEED.concat(["divs", "divb"]), live: [], ctl: [], bad: ["q3"], on: [],
+      body: "MOSFET-er shobcheye boro bhoy short hoye atke jawa. Q3 OFF, tai solenoid-e shudhu R12-er 0.25 mA test current, solenoid nore na. VSW prai 0 V-e neme jay; self-test dhore, ARM-i hoy na. Duita switch thakar karon eta.",
+      stats: [["Solenoid current", "0.25 mA (nore na)"], ["VSW ÷ VBAT", "0.0002 → ARM block"]] }),
+    fq3: c => ({ test: FEED.concat(["p4a", "p4b", "p5", "s1a", "s1b", "s2a", "s2b"], READ), live: [], ctl: ["u5", "u6", "u7"], bad: ["q3"], on: [],
       title: "Q3 nosto hoye short hole",
-      body: "VSW shob shomoy battery voltage-e thake, kintu " + c.name + " OFF bole solenoid-e current nai. ESP32 dekhe ratio 1.00 (howa uchit 0.62), FAULT HS_LEAK dey, ARM ney na: karon ekhon ekta-i switch baki.",
-      stats: [["Solenoid current", "0 A"], ["VSW ÷ VBAT", "1.00 → FAULT HS_LEAK"]] })
+      body: "VSW shob shomoy battery voltage-e, kintu Q1/Q2 OFF tai solenoid-e current nai. DISARMED obosthay ratio 1.00 (howa uchit 0.51): self-test fail, ARM hoy na, karon ekhon ekta-i switch baki.",
+      stats: [["Solenoid current", "0 A"], ["VSW ÷ VBAT", "1.00 → ARM block"]] }),
+    fopen: c => ({ test: FEED.concat(["r12", "p4b"], c.other, READ), live: [], ctl: ["u5", "u6", "u7"], bad: [c.sol], on: [],
+      title: c.sn + "-er tar khola",
+      body: "Coil na thakle " + c.node + " ar VSW-er shathe jora thake na, divider ota 0-e name. UF5408 prai leak kore na, tai poriskar dhora pore. ESP oi channel-ke block kore; onno solenoid lagano thakle sheta ekhono fire kora jay.",
+      stats: [["VSW ÷ VBAT", "0.60"], [c.node + " ÷ VSW", "0.0001 (70 °C-e 0.0024)"], ["Fire " + (c.q === "q1" ? "1" : "2"), "block"]] })
   };
   let step = "idle", ch = 1;
   const wires = Array.from(document.querySelectorAll("#flow .w[id]")), nodes = Array.from(document.querySelectorAll("#flow .node"));
@@ -524,7 +562,7 @@ code{font-family:var(--mono);font-size:.84em;background:var(--card);border:1px s
     nodes.forEach(n => n.classList.remove("live", "ctl", "flyn", "bad"));
     const tag = (ids, cls) => (ids || []).forEach(i => { const e = $("n-" + i); if (e) e.classList.add(cls); });
     tag(s.ctl, "ctl"); tag(s.flyn, "flyn"); tag(s.live, "live"); tag(s.bad, "bad");
-    if ((s.main || []).length) tag(["batp", "j1p", "f1", "j1m", "batm"], "live");
+    if ((s.main || []).length) tag(["batp", "j1p", "f2", "f1", "j1m", "batm"], "live");
     ["q1", "q2", "q3"].forEach(q => { $("st-" + q).textContent = (s.bad || []).includes(q) ? "SHORT" : (s.on || []).includes(q) ? "ON" : "OFF"; });
     $("s-title").textContent = s.title; $("s-body").textContent = s.body;
     const dl = $("s-stats"); dl.textContent = "";
@@ -542,8 +580,8 @@ code{font-family:var(--mono);font-size:.84em;background:var(--card);border:1px s
 (function () {
 const stage = document.getElementById("stage");
 if (!window.THREE || !THREE.OrbitControls) { document.getElementById("msg").textContent = "3D library load hoyni. Page reload koro."; return; }
-const PARTS = [{"ref":"Q2","val":"IRLZ44N","fp":"TO-220-3_Vertical","x":59.0,"y":26.4,"rot":0.0,"pads":[["1",59.0,26.4,1.1],["2",61.54,26.4,1.1],["3",64.08,26.4,1.1]]},{"ref":"H3","val":"M3","fp":"MountingHole_3.2mm_M3","x":78.5,"y":47.5,"rot":0.0,"pads":[["",78.5,47.5,3.2]]},{"ref":"D1","val":"1N5819","fp":"D_DO-41_SOD81_P10.16mm_Horizontal","x":72.0,"y":1.9,"rot":-90.0,"pads":[["1",72.0,1.9,1.1],["2",72.0,12.06,1.1]]},{"ref":"R4","val":"4.7k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal","x":48.62,"y":33.1,"rot":180.0,"pads":[["1",48.62,33.1,0.8],["2",41.0,33.1,0.8]]},{"ref":"R7","val":"3.3k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":56.5,"y":3.6,"rot":0.0,"pads":[["1",56.5,3.6,0.8],["2",66.66,3.6,0.8]]},{"ref":"C1","val":"470uF 35V","fp":"CP_Radial_D10.0mm_P5.00mm","x":27.5,"y":6.6,"rot":0.0,"pads":[["1",27.5,6.6,1.0],["2",32.5,6.6,1.0]]},{"ref":"H4","val":"M3","fp":"MountingHole_3.2mm_M3","x":63.0,"y":47.5,"rot":0.0,"pads":[["",63.0,47.5,3.2]]},{"ref":"J4","val":"5V IN","fp":"TerminalBlock_bornier-2_P5.08mm","x":8.92,"y":47.3,"rot":0.0,"pads":[["1",8.92,47.3,1.52],["2",14.0,47.3,1.52]]},{"ref":"U3","val":"PC817","fp":"DIP-4_W7.62mm","x":41.0,"y":27.4,"rot":0.0,"pads":[["1",41.0,27.4,0.8],["2",41.0,29.94,0.8],["3",48.62,29.94,0.8],["4",48.62,27.4,0.8]]},{"ref":"R9","val":"1k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal","x":53.8,"y":3.6,"rot":-90.0,"pads":[["1",53.8,3.6,0.8],["2",53.8,11.22,0.8]]},{"ref":"U2","val":"PC817","fp":"DIP-4_W7.62mm","x":41.0,"y":17.8,"rot":0.0,"pads":[["1",41.0,17.8,0.8],["2",41.0,20.34,0.8],["3",48.62,20.34,0.8],["4",48.62,17.8,0.8]]},{"ref":"C3","val":"100nF","fp":"C_Disc_D5.0mm_W2.5mm_P5.00mm","x":35.16,"y":24.7,"rot":180.0,"pads":[["1",35.16,24.7,0.8],["2",30.16,24.7,0.8]]},{"ref":"Q3","val":"IRF4905","fp":"TO-220-3_Vertical","x":48.08,"y":6.2,"rot":180.0,"pads":[["1",48.08,6.2,1.1],["2",45.54,6.2,1.1],["3",43.0,6.2,1.1]]},{"ref":"R14","val":"2.2k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal","x":48.62,"y":14.6,"rot":180.0,"pads":[["1",48.62,14.6,0.8],["2",41.0,14.6,0.8]]},{"ref":"D2","val":"1N5819","fp":"D_DO-41_SOD81_P10.16mm_Horizontal","x":72.0,"y":40.1,"rot":90.0,"pads":[["1",72.0,40.1,1.1],["2",72.0,29.94,1.1]]},{"ref":"H1","val":"M3","fp":"MountingHole_3.2mm_M3","x":77.5,"y":21.0,"rot":0.0,"pads":[["",77.5,21.0,3.2]]},{"ref":"LED2","val":"red 3mm","fp":"LED_D3.0mm","x":68.0,"y":32.66,"rot":-90.0,"pads":[["1",68.0,32.66,0.9],["2",68.0,35.2,0.9]]},{"ref":"Q1","val":"IRLZ44N","fp":"TO-220-3_Vertical","x":59.0,"y":15.6,"rot":0.0,"pads":[["1",59.0,15.6,1.1],["2",61.54,15.6,1.1],["3",64.08,15.6,1.1]]},{"ref":"R10","val":"22k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":52.0,"y":45.0,"rot":180.0,"pads":[["1",52.0,45.0,0.8],["2",41.84,45.0,0.8]]},{"ref":"U1A","val":"SuperMini 5V..IO0","fp":"PinSocket_1x08_P2.54mm_Vertical","x":2.54,"y":21.0,"rot":90.0,"pads":[["1",2.54,21.0,1.0],["2",5.08,21.0,1.0],["3",7.62,21.0,1.0],["4",10.16,21.0,1.0],["5",12.7,21.0,1.0],["6",15.24,21.0,1.0],["7",17.78,21.0,1.0],["8",20.32,21.0,1.0]]},{"ref":"C4","val":"100nF","fp":"C_Disc_D5.0mm_W2.5mm_P5.00mm","x":54.4,"y":15.4,"rot":-90.0,"pads":[["1",54.4,15.4,0.8],["2",54.4,20.4,0.8]]},{"ref":"D5","val":"12V zener","fp":"D_DO-35_SOD27_P7.62mm_Horizontal","x":51.4,"y":17.8,"rot":-90.0,"pads":[["1",51.4,17.8,0.8],["2",51.4,25.42,0.8]]},{"ref":"R11","val":"2.2k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":25.0,"y":34.3,"rot":0.0,"pads":[["1",25.0,34.3,0.8],["2",35.16,34.3,0.8]]},{"ref":"J1","val":"XT60PW-M","fp":"AMASS_XT60PW-M_1x02_P7.20mm_Horizontal","x":16.6,"y":12.85,"rot":90.0,"pads":[["",10.6,16.0,0.6],["",10.6,2.5,0.6],["1",16.6,12.85,2.7],["2",16.6,5.65,2.7]]},{"ref":"R2","val":"220","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":25.0,"y":31.1,"rot":0.0,"pads":[["1",25.0,31.1,0.8],["2",35.16,31.1,0.8]]},{"ref":"H2","val":"M3","fp":"MountingHole_3.2mm_M3","x":22.5,"y":47.5,"rot":0.0,"pads":[["",22.5,47.5,3.2]]},{"ref":"U1B","val":"SuperMini IO5..IO21","fp":"PinSocket_1x08_P2.54mm_Vertical","x":2.54,"y":36.24,"rot":90.0,"pads":[["1",2.54,36.24,1.0],["2",5.08,36.24,1.0],["3",7.62,36.24,1.0],["4",10.16,36.24,1.0],["5",12.7,36.24,1.0],["6",15.24,36.24,1.0],["7",17.78,36.24,1.0],["8",20.32,36.24,1.0]]},{"ref":"R12","val":"15k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal","x":40.0,"y":1.9,"rot":0.0,"pads":[["1",40.0,1.9,0.8],["2",47.62,1.9,0.8]]},{"ref":"J3","val":"SOL2","fp":"TerminalBlock_bornier-2_P5.08mm","x":78.8,"y":38.6,"rot":90.0,"pads":[["1",78.8,38.6,1.52],["2",78.8,33.52,1.52]]},{"ref":"R5","val":"22k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":25.0,"y":18.3,"rot":0.0,"pads":[["1",25.0,18.3,0.8],["2",35.16,18.3,0.8]]},{"ref":"R13","val":"4.7k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal","x":41.0,"y":11.4,"rot":0.0,"pads":[["1",41.0,11.4,0.8],["2",48.62,11.4,0.8]]},{"ref":"D3","val":"1N5819","fp":"D_DO-41_SOD81_P10.16mm_Horizontal","x":3.5,"y":41.0,"rot":0.0,"pads":[["1",3.5,41.0,1.1],["2",13.66,41.0,1.1]]},{"ref":"C5","val":"100nF","fp":"C_Disc_D5.0mm_W2.5mm_P5.00mm","x":25.0,"y":37.5,"rot":0.0,"pads":[["1",25.0,37.5,0.8],["2",30.0,37.5,0.8]]},{"ref":"LED1","val":"red 3mm","fp":"LED_D3.0mm","x":68.0,"y":9.34,"rot":90.0,"pads":[["1",68.0,9.34,0.9],["2",68.0,6.8,0.9]]},{"ref":"R1","val":"220","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":25.0,"y":27.9,"rot":0.0,"pads":[["1",25.0,27.9,0.8],["2",35.16,27.9,0.8]]},{"ref":"F1","val":"RUEF300 PTC 3A 30V","fp":"PTC_Radial_P5.08mm_W11.5mm","x":22.4,"y":3.9,"rot":-90.0,"pads":[["1",22.4,3.9,1.1],["2",22.4,8.98,1.1]]},{"ref":"R3","val":"4.7k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal","x":48.62,"y":23.5,"rot":180.0,"pads":[["1",48.62,23.5,0.8],["2",41.0,23.5,0.8]]},{"ref":"R15","val":"220","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":25.0,"y":40.7,"rot":0.0,"pads":[["1",25.0,40.7,0.8],["2",35.16,40.7,0.8]]},{"ref":"R6","val":"2.2k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":25.0,"y":21.5,"rot":0.0,"pads":[["1",25.0,21.5,0.8],["2",35.16,21.5,0.8]]},{"ref":"J2","val":"SOL1","fp":"TerminalBlock_bornier-2_P5.08mm","x":78.8,"y":8.48,"rot":90.0,"pads":[["1",78.8,8.48,1.52],["2",78.8,3.4,1.52]]},{"ref":"D4","val":"P6KE20A TVS","fp":"D_DO-15_P10.16mm_Horizontal","x":24.6,"y":14.6,"rot":0.0,"pads":[["1",24.6,14.6,1.2],["2",34.76,14.6,1.2]]},{"ref":"R8","val":"3.3k","fp":"R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal","x":56.5,"y":38.4,"rot":0.0,"pads":[["1",56.5,38.4,0.8],["2",66.66,38.4,0.8]]},{"ref":"U4","val":"PC817","fp":"DIP-4_W7.62mm","x":41.0,"y":37.0,"rot":0.0,"pads":[["1",41.0,37.0,0.8],["2",41.0,39.54,0.8],["3",48.62,39.54,0.8],["4",48.62,37.0,0.8]]}];
-const BW = 83, BH = 52, T = 1.6;
+const PARTS = [{"ref": "C1", "val": "470uF 35V", "fp": "CP_Radial_D10.0mm_P5.00mm", "x": 70.5, "y": 46.0, "rot": 0.0, "pads": [["1", 70.5, 46.0, 1.0], ["2", 75.5, 46.0, 1.0]]}, {"ref": "C11", "val": "100nF", "fp": "C_Disc_D5.0mm_W2.5mm_P5.00mm", "x": 44.0, "y": 29.2, "rot": 0.0, "pads": [["1", 44.0, 29.2, 0.8], ["2", 49.0, 29.2, 0.8]]}, {"ref": "C3", "val": "100nF", "fp": "C_Disc_D5.0mm_W2.5mm_P5.00mm", "x": 87.6, "y": 63.0, "rot": 0.0, "pads": [["1", 87.6, 63.0, 0.8], ["2", 92.6, 63.0, 0.8]]}, {"ref": "C4", "val": "100nF", "fp": "C_Disc_D5.0mm_W2.5mm_P5.00mm", "x": 44.0, "y": 5.4, "rot": 0.0, "pads": [["1", 44.0, 5.4, 0.8], ["2", 49.0, 5.4, 0.8]]}, {"ref": "C5", "val": "100nF", "fp": "C_Disc_D5.0mm_W2.5mm_P5.00mm", "x": 87.6, "y": 69.4, "rot": 0.0, "pads": [["1", 87.6, 69.4, 0.8], ["2", 92.6, 69.4, 0.8]]}, {"ref": "C6", "val": "100nF", "fp": "C_Disc_D5.0mm_W2.5mm_P5.00mm", "x": 87.6, "y": 75.8, "rot": 0.0, "pads": [["1", 87.6, 75.8, 0.8], ["2", 92.6, 75.8, 0.8]]}, {"ref": "C7", "val": "100nF", "fp": "C_Disc_D5.0mm_W2.5mm_P5.00mm", "x": 87.6, "y": 79.0, "rot": 0.0, "pads": [["1", 87.6, 79.0, 0.8], ["2", 92.6, 79.0, 0.8]]}, {"ref": "C8", "val": "10uF 35V", "fp": "CP_Radial_D5.0mm_P2.00mm", "x": 55.0, "y": 62.0, "rot": 0.0, "pads": [["1", 55.0, 62.0, 0.8], ["2", 57.0, 62.0, 0.8]]}, {"ref": "C9", "val": "10uF 35V", "fp": "CP_Radial_D5.0mm_P2.00mm", "x": 68.6, "y": 62.0, "rot": 0.0, "pads": [["1", 68.6, 62.0, 0.8], ["2", 70.6, 62.0, 0.8]]}, {"ref": "D1", "val": "UF5408", "fp": "D_DO-201AD_P12.70mm_Horizontal", "x": 79.0, "y": 17.0, "rot": 90.0, "pads": [["1", 79.0, 17.0, 1.6], ["2", 79.0, 4.3, 1.6]]}, {"ref": "D2", "val": "UF5408", "fp": "D_DO-201AD_P12.70mm_Horizontal", "x": 79.0, "y": 21.6, "rot": -90.0, "pads": [["1", 79.0, 21.6, 1.6], ["2", 79.0, 34.3, 1.6]]}, {"ref": "D3", "val": "1N5819", "fp": "D_DO-41_SOD81_P7.62mm_Horizontal", "x": 15.0, "y": 15.5, "rot": 180.0, "pads": [["1", 15.0, 15.5, 1.1], ["2", 7.38, 15.5, 1.1]]}, {"ref": "D4", "val": "P6KE22A", "fp": "D_DO-15_P10.16mm_Horizontal", "x": 44.0, "y": 44.6, "rot": 0.0, "pads": [["1", 44.0, 44.6, 1.2], ["2", 54.16, 44.6, 1.2]]}, {"ref": "D5", "val": "12V zener", "fp": "D_DO-35_SOD27_P7.62mm_Horizontal", "x": 44.0, "y": 2.6, "rot": 0.0, "pads": [["1", 44.0, 2.6, 0.8], ["2", 51.62, 2.6, 0.8]]}, {"ref": "D6", "val": "15V zener", "fp": "D_DO-35_SOD27_P7.62mm_Horizontal", "x": 44.0, "y": 26.0, "rot": 0.0, "pads": [["1", 44.0, 26.0, 0.8], ["2", 51.62, 26.0, 0.8]]}, {"ref": "D7", "val": "20V zener", "fp": "D_DO-35_SOD27_P7.62mm_Horizontal", "x": 51.62, "y": 64.2, "rot": 180.0, "pads": [["1", 51.62, 64.2, 0.8], ["2", 44.0, 64.2, 0.8]]}, {"ref": "F1", "val": "RUEF300 PTC 3A 30V", "fp": "PTC_Radial_P5.08mm_W11.5mm", "x": 53.0, "y": 56.2, "rot": 180.0, "pads": [["1", 53.0, 56.2, 1.1], ["2", 47.92, 56.2, 1.1]]}, {"ref": "F2", "val": "5A fast 5x20 ceramic", "fp": "Fuseholder_Clip-5x20mm_Littelfuse_111_Inline_P20.00x5.00mm_D1.05mm_Horizontal", "x": 78.6, "y": 56.2, "rot": 180.0, "pads": [["1", 78.6, 56.2, 1.05], ["1", 73.6, 56.2, 1.05], ["2", 63.6, 56.2, 1.05], ["2", 58.6, 56.2, 1.05]]}, {"ref": "H1", "val": "M3", "fp": "MountingHole_3.2mm_M3", "x": 22.0, "y": 4.0, "rot": 0.0, "pads": [["", 22.0, 4.0, 3.2]]}, {"ref": "H2", "val": "M3", "fp": "MountingHole_3.2mm_M3", "x": 4.0, "y": 84.0, "rot": 0.0, "pads": [["", 4.0, 84.0, 3.2]]}, {"ref": "H3", "val": "M3", "fp": "MountingHole_3.2mm_M3", "x": 96.0, "y": 4.0, "rot": 0.0, "pads": [["", 96.0, 4.0, 3.2]]}, {"ref": "H4", "val": "M3", "fp": "MountingHole_3.2mm_M3", "x": 96.5, "y": 84.5, "rot": 0.0, "pads": [["", 96.5, 84.5, 3.2]]}, {"ref": "H5", "val": "M3", "fp": "MountingHole_3.2mm_M3", "x": 96.0, "y": 37.5, "rot": 0.0, "pads": [["", 96.0, 37.5, 3.2]]}, {"ref": "H6", "val": "M3", "fp": "MountingHole_3.2mm_M3", "x": 37.0, "y": 84.0, "rot": 0.0, "pads": [["", 37.0, 84.0, 3.2]]}, {"ref": "J1", "val": "XT60PW-M", "fp": "AMASS_XT60PW-M_1x02_P7.20mm_Horizontal", "x": 83.4, "y": 49.0, "rot": -90.0, "pads": [["", 89.4, 45.85, 0.6], ["", 89.4, 59.35, 0.6], ["1", 83.4, 49.0, 2.7], ["2", 83.4, 56.2, 2.7]]}, {"ref": "J2", "val": "SOL1", "fp": "TerminalBlock_bornier-2_P5.08mm", "x": 95.5, "y": 17.0, "rot": 90.0, "pads": [["1", 95.5, 17.0, 1.52], ["2", 95.5, 11.92, 1.52]]}, {"ref": "J3", "val": "SOL2", "fp": "TerminalBlock_bornier-2_P5.08mm", "x": 95.5, "y": 28.0, "rot": 90.0, "pads": [["1", 95.5, 28.0, 1.52], ["2", 95.5, 22.92, 1.52]]}, {"ref": "J4", "val": "LOGIC 5V IN", "fp": "TerminalBlock_bornier-2_P5.08mm", "x": 7.0, "y": 8.5, "rot": 0.0, "pads": [["1", 7.0, 8.5, 1.52], ["2", 12.08, 8.5, 1.52]]}, {"ref": "LED1", "val": "red 3mm", "fp": "LED_D3.0mm", "x": 56.54, "y": 15.2, "rot": 180.0, "pads": [["1", 56.54, 15.2, 0.9], ["2", 54.0, 15.2, 0.9]]}, {"ref": "LED2", "val": "red 3mm", "fp": "LED_D3.0mm", "x": 56.54, "y": 36.4, "rot": 180.0, "pads": [["1", 56.54, 36.4, 0.9], ["2", 54.0, 36.4, 0.9]]}, {"ref": "Q1", "val": "IRLZ44N", "fp": "TO-220-3_Vertical", "x": 64.0, "y": 7.5, "rot": 0.0, "pads": [["1", 64.0, 7.5, 1.1], ["2", 66.54, 7.5, 1.1], ["3", 69.08, 7.5, 1.1]]}, {"ref": "Q2", "val": "IRLZ44N", "fp": "TO-220-3_Vertical", "x": 67.6, "y": 35.5, "rot": 0.0, "pads": [["1", 67.6, 35.5, 1.1], ["2", 70.14, 35.5, 1.1], ["3", 72.68, 35.5, 1.1]]}, {"ref": "Q3", "val": "IRF4905", "fp": "TO-220-3_Vertical", "x": 60.0, "y": 22.5, "rot": 0.0, "pads": [["1", 60.0, 22.5, 1.1], ["2", 62.54, 22.5, 1.1], ["3", 65.08, 22.5, 1.1]]}, {"ref": "R1", "val": "150", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 23.4, "y": 9.2, "rot": 0.0, "pads": [["1", 23.4, 9.2, 0.8], ["2", 31.02, 9.2, 0.8]]}, {"ref": "R10", "val": "200k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 69.4, "rot": 0.0, "pads": [["1", 77.8, 69.4, 0.8], ["2", 85.42, 69.4, 0.8]]}, {"ref": "R11", "val": "20k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 72.6, "rot": 0.0, "pads": [["1", 77.8, 72.6, 0.8], ["2", 85.42, 72.6, 0.8]]}, {"ref": "R12", "val": "68k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 54.92, "y": 29.0, "rot": 0.0, "pads": [["1", 54.92, 29.0, 0.8], ["2", 62.54, 29.0, 0.8]]}, {"ref": "R13", "val": "4.7k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 22.8, "rot": 0.0, "pads": [["1", 44.0, 22.8, 0.8], ["2", 51.62, 22.8, 0.8]]}, {"ref": "R14", "val": "1k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 19.6, "rot": 0.0, "pads": [["1", 44.0, 19.6, 0.8], ["2", 51.62, 19.6, 0.8]]}, {"ref": "R15", "val": "150", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 23.4, "y": 21.0, "rot": 0.0, "pads": [["1", 23.4, 21.0, 0.8], ["2", 31.02, 21.0, 0.8]]}, {"ref": "R16", "val": "220", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 23.4, "y": 58.0, "rot": 0.0, "pads": [["1", 23.4, 58.0, 0.8], ["2", 31.02, 58.0, 0.8]]}, {"ref": "R17", "val": "220", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 23.4, "y": 66.0, "rot": 0.0, "pads": [["1", 23.4, 66.0, 0.8], ["2", 31.02, 66.0, 0.8]]}, {"ref": "R18", "val": "1k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 51.62, "y": 76.6, "rot": 180.0, "pads": [["1", 51.62, 76.6, 0.8], ["2", 44.0, 76.6, 0.8]]}, {"ref": "R19", "val": "6.8k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 23.4, "y": 80.0, "rot": 0.0, "pads": [["1", 23.4, 80.0, 0.8], ["2", 31.02, 80.0, 0.8]]}, {"ref": "R2", "val": "150", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 23.4, "y": 34.0, "rot": 0.0, "pads": [["1", 23.4, 34.0, 0.8], ["2", 31.02, 34.0, 0.8]]}, {"ref": "R20", "val": "10k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 67.4, "rot": 0.0, "pads": [["1", 44.0, 67.4, 0.8], ["2", 51.62, 67.4, 0.8]]}, {"ref": "R21", "val": "10k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 70.6, "rot": 0.0, "pads": [["1", 44.0, 70.6, 0.8], ["2", 51.62, 70.6, 0.8]]}, {"ref": "R22", "val": "200k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 75.8, "rot": 0.0, "pads": [["1", 77.8, 75.8, 0.8], ["2", 85.42, 75.8, 0.8]]}, {"ref": "R23", "val": "20k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 79.0, "rot": 0.0, "pads": [["1", 77.8, 79.0, 0.8], ["2", 85.42, 79.0, 0.8]]}, {"ref": "R24", "val": "200k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 82.2, "rot": 0.0, "pads": [["1", 77.8, 82.2, 0.8], ["2", 85.42, 82.2, 0.8]]}, {"ref": "R25", "val": "20k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 85.4, "rot": 0.0, "pads": [["1", 77.8, 85.4, 0.8], ["2", 85.42, 85.4, 0.8]]}, {"ref": "R26", "val": "1k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 61.0, "rot": 0.0, "pads": [["1", 44.0, 61.0, 0.8], ["2", 51.62, 61.0, 0.8]]}, {"ref": "R3", "val": "4.7k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 12.0, "rot": 0.0, "pads": [["1", 44.0, 12.0, 0.8], ["2", 51.62, 12.0, 0.8]]}, {"ref": "R4", "val": "4.7k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 33.2, "rot": 0.0, "pads": [["1", 44.0, 33.2, 0.8], ["2", 51.62, 33.2, 0.8]]}, {"ref": "R5", "val": "200k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 63.0, "rot": 0.0, "pads": [["1", 77.8, 63.0, 0.8], ["2", 85.42, 63.0, 0.8]]}, {"ref": "R6", "val": "20k 1%", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 77.8, "y": 66.2, "rot": 0.0, "pads": [["1", 77.8, 66.2, 0.8], ["2", 85.42, 66.2, 0.8]]}, {"ref": "R7", "val": "10k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 15.2, "rot": 0.0, "pads": [["1", 44.0, 15.2, 0.8], ["2", 51.62, 15.2, 0.8]]}, {"ref": "R8", "val": "10k", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 36.4, "rot": 0.0, "pads": [["1", 44.0, 36.4, 0.8], ["2", 51.62, 36.4, 0.8]]}, {"ref": "R9", "val": "680", "fp": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", "x": 44.0, "y": 8.6, "rot": 0.0, "pads": [["1", 44.0, 8.6, 0.8], ["2", 51.62, 8.6, 0.8]]}, {"ref": "U1A", "val": "SuperMini 5V..IO0", "fp": "PinSocket_1x08_P2.54mm_Vertical", "x": 2.54, "y": 24.0, "rot": 90.0, "pads": [["1", 2.54, 24.0, 1.0], ["2", 5.08, 24.0, 1.0], ["3", 7.62, 24.0, 1.0], ["4", 10.16, 24.0, 1.0], ["5", 12.7, 24.0, 1.0], ["6", 15.24, 24.0, 1.0], ["7", 17.78, 24.0, 1.0], ["8", 20.32, 24.0, 1.0]]}, {"ref": "U1B", "val": "SuperMini IO5..IO21", "fp": "PinSocket_1x08_P2.54mm_Vertical", "x": 2.54, "y": 39.24, "rot": 90.0, "pads": [["1", 2.54, 39.24, 1.0], ["2", 5.08, 39.24, 1.0], ["3", 7.62, 39.24, 1.0], ["4", 10.16, 39.24, 1.0], ["5", 12.7, 39.24, 1.0], ["6", 15.24, 39.24, 1.0], ["7", 17.78, 39.24, 1.0], ["8", 20.32, 39.24, 1.0]]}, {"ref": "U2", "val": "PC817", "fp": "DIP-4_W7.62mm", "x": 33.19, "y": 9.2, "rot": 0.0, "pads": [["1", 33.19, 9.2, 0.8], ["2", 33.19, 11.74, 0.8], ["3", 40.81, 11.74, 0.8], ["4", 40.81, 9.2, 0.8]]}, {"ref": "U3", "val": "PC817", "fp": "DIP-4_W7.62mm", "x": 33.19, "y": 34.0, "rot": 0.0, "pads": [["1", 33.19, 34.0, 0.8], ["2", 33.19, 36.54, 0.8], ["3", 40.81, 36.54, 0.8], ["4", 40.81, 34.0, 0.8]]}, {"ref": "U4", "val": "PC817", "fp": "DIP-4_W7.62mm", "x": 33.19, "y": 21.0, "rot": 0.0, "pads": [["1", 33.19, 21.0, 0.8], ["2", 33.19, 23.54, 0.8], ["3", 40.81, 23.54, 0.8], ["4", 40.81, 21.0, 0.8]]}, {"ref": "U5", "val": "PC817", "fp": "DIP-4_W7.62mm", "x": 33.19, "y": 58.0, "rot": 0.0, "pads": [["1", 33.19, 58.0, 0.8], ["2", 33.19, 60.54, 0.8], ["3", 40.81, 60.54, 0.8], ["4", 40.81, 58.0, 0.8]]}, {"ref": "U6", "val": "PC817", "fp": "DIP-4_W7.62mm", "x": 33.19, "y": 66.0, "rot": 0.0, "pads": [["1", 33.19, 66.0, 0.8], ["2", 33.19, 68.54, 0.8], ["3", 40.81, 68.54, 0.8], ["4", 40.81, 66.0, 0.8]]}, {"ref": "U7", "val": "PC817", "fp": "DIP-4_W7.62mm", "x": 40.81, "y": 76.54, "rot": 180.0, "pads": [["1", 40.81, 76.54, 0.8], ["2", 40.81, 74.0, 0.8], ["3", 33.19, 74.0, 0.8], ["4", 33.19, 76.54, 0.8]]}, {"ref": "U8", "val": "LP2950-3.3", "fp": "TO-92_Inline_Wide", "x": 59.8, "y": 62.0, "rot": 0.0, "pads": [["1", 59.8, 62.0, 0.8], ["2", 62.34, 62.0, 0.8], ["3", 64.88, 62.0, 0.8]]}, {"ref": "U9", "val": "ADS1115 module (GY-ADS1115)", "fp": "PinSocket_1x10_P2.54mm_Vertical", "x": 52.0, "y": 85.5, "rot": 90.0, "pads": [["1", 52.0, 85.5, 1.0], ["2", 54.54, 85.5, 1.0], ["3", 57.08, 85.5, 1.0], ["4", 59.62, 85.5, 1.0], ["5", 62.16, 85.5, 1.0], ["6", 64.7, 85.5, 1.0], ["7", 67.24, 85.5, 1.0], ["8", 69.78, 85.5, 1.0], ["9", 72.32, 85.5, 1.0], ["10", 74.86, 85.5, 1.0]]}];
+const BW = 100, BH = 88, T = 1.6;
 const V = (x, y, h = 0) => new THREE.Vector3(x - BW / 2, h, y - BH / 2);
 
 const scene = new THREE.Scene();
@@ -559,7 +597,7 @@ controls.enableDamping = true; controls.autoRotateSpeed = 1.0; controls.target.s
 scene.add(new THREE.HemisphereLight(0xffffff, 0x8a96a3, 0.55));
 const sun = new THREE.DirectionalLight(0xffffff, 0.95); sun.position.set(-45, 90, 55);
 sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 45, bottom: -45, near: 10, far: 260 }); sun.shadow.bias = -0.0005;
+Object.assign(sun.shadow.camera, { left: -72, right: 72, top: 62, bottom: -62, near: 10, far: 300 }); sun.shadow.bias = -0.0005;
 scene.add(sun);
 const rim = new THREE.DirectionalLight(0xffffff, 0.35); rim.position.set(60, 40, -70); scene.add(rim);
 const under = new THREE.DirectionalLight(0xffffff, 0.45); under.position.set(20, -80, 30); scene.add(under);
@@ -573,11 +611,13 @@ const M = {
   ptc: mat(0xf0b33c, { roughness: 0.5 }), led: mat(0xff3d3d, { transparent: true, opacity: 0.82, roughness: 0.12 }),
   term: mat(0x1f6fc0, { roughness: 0.5 }), termDark: mat(0x0c2c4f), xt60: mat(0xf2c400, { roughness: 0.45 }),
   dark: mat(0x0b0b0c), metal: mat(0xbfc5cc, { metalness: 0.85, roughness: 0.25 }), espPcb: mat(0x1b3c74, { roughness: 0.6 }),
-  fr4: mat(0xc7b56e, { roughness: 0.7 }), glass: mat(0xd9541e, { transparent: true, opacity: 0.88, roughness: 0.15 })
+  fr4: mat(0xc7b56e, { roughness: 0.7 }), glass: mat(0xd9541e, { transparent: true, opacity: 0.88, roughness: 0.15 }),
+  mfBody: mat(0x6fa8d6, { roughness: 0.45 }), fuseBody: mat(0xeee8d8, { roughness: 0.6 }), adsPcb: mat(0x3a2b74, { roughness: 0.6 })
 };
-const BLK = 0x111111, BRN = 0x7b3f00, RED = 0xe03131, ORG = 0xf76707, YEL = 0xfab005, GRN = 0x2f9e44, VIO = 0x7048e8, GOLD = 0xc9a227;
-const BAND = { "220": [RED, RED, BRN], "4.7k": [YEL, VIO, RED], "2.2k": [RED, RED, RED], "22k": [RED, RED, ORG], "15k": [BRN, GRN, ORG], "1k": [BRN, BLK, RED], "3.3k": [ORG, ORG, RED] };
-const bandMat = {}; [BLK, BRN, RED, ORG, YEL, GRN, VIO, GOLD].forEach(c => bandMat[c] = mat(c));
+const BLK = 0x111111, BRN = 0x7b3f00, RED = 0xe03131, ORG = 0xf76707, YEL = 0xfab005, GRN = 0x2f9e44, VIO = 0x7048e8, BLU = 0x1c64d1, GRY = 0x8a8f95, GOLD = 0xc9a227;
+const BAND = { "150": [BRN, GRN, BRN], "220": [RED, RED, BRN], "680": [BLU, GRY, BRN], "1k": [BRN, BLK, RED], "4.7k": [YEL, VIO, RED], "6.8k": [BLU, GRY, RED], "10k": [BRN, BLK, ORG],
+  "200k 1%": [RED, BLK, BLK, ORG], "20k 1%": [RED, BLK, BLK, RED], "68k 1%": [BLU, GRY, BLK, RED] };   // 1 %: four digit bands
+const bandMat = {}; [BLK, BRN, RED, ORG, YEL, GRN, VIO, BLU, GRY, GOLD].forEach(c => bandMat[c] = mat(c));
 
 const groups = { esp: new THREE.Group() }; scene.add(groups.esp);
 function add(o, g = scene) { o.castShadow = true; o.receiveShadow = true; g.add(o); return o; }
@@ -607,22 +647,27 @@ bot.rotation.x = Math.PI / 2; bot.position.y = -T - 0.005;
 
 // ---------------------------------------------------------------- parts
 const pads = p => Object.fromEntries(p.pads.filter(q => q[0]).map(q => [q[0], q]));
-const AX = { R: [6.3, 1.25], D: [5.2, 1.35], T: [7.6, 1.8], Z: [3.9, 0.95] };   // body length, radius: resistor, DO-41, DO-15, DO-35
+const AX = { R: [6.3, 1.25], D: [5.2, 1.35], T: [7.6, 1.8], Z: [3.9, 0.95], B: [9.5, 2.65] };   // body length, radius: resistor, DO-41, DO-15, DO-35, DO-201AD
 function axial(p, kind) {
   const P = pads(p), a = P["1"], b = P["2"], L = AX[kind][0], R = AX[kind][1], h = Math.max(1.6, R + 0.3);
   const A = V(a[1], a[2], h), B = V(b[1], b[2], h), dir = new THREE.Vector3().subVectors(B, A).normalize();
   const mid = A.clone().add(B).multiplyScalar(0.5), e1 = mid.clone().addScaledVector(dir, -L / 2), e2 = mid.clone().addScaledVector(dir, L / 2);
-  lead(a[1], a[2], h); lead(b[1], b[2], h); seg(A, e1, 0.32, M.lead); seg(e2, B, 0.32, M.lead);
-  seg(e1, e2, R, kind === "R" ? M.resBody : kind === "Z" ? M.glass : M.black);
+  const lr = kind === "B" ? 0.6 : 0.32;
+  lead(a[1], a[2], h, lr); lead(b[1], b[2], h, lr); seg(A, e1, lr, M.lead); seg(e2, B, lr, M.lead);
+  const prec = / 1%$/.test(p.val);                                       // 1 % metal film: blue body, 4 digit bands + brown
+  seg(e1, e2, R, kind === "R" ? (prec ? M.mfBody : M.resBody) : kind === "Z" ? M.glass : M.black);
   if (kind === "R") {
-    seg(e1.clone().addScaledVector(dir, -0.3), e1.clone().addScaledVector(dir, 0.9), R + 0.12, M.resBody);
-    seg(e2.clone().addScaledVector(dir, -0.9), e2.clone().addScaledVector(dir, 0.3), R + 0.12, M.resBody);
-    (BAND[p.val] || [BRN, BLK, RED]).concat([GOLD]).forEach((c, i) => {
-      const q = e1.clone().addScaledVector(dir, L * (i < 3 ? 0.24 + i * 0.15 : 0.82));
-      seg(q.clone().addScaledVector(dir, -0.32), q.clone().addScaledVector(dir, 0.32), R + (i < 3 ? 0.04 : 0.14), bandMat[c]);
+    const body = prec ? M.mfBody : M.resBody;
+    seg(e1.clone().addScaledVector(dir, -0.3), e1.clone().addScaledVector(dir, 0.9), R + 0.12, body);
+    seg(e2.clone().addScaledVector(dir, -0.9), e2.clone().addScaledVector(dir, 0.3), R + 0.12, body);
+    const digits = BAND[p.val] || [BRN, BLK, RED], n = digits.length;
+    digits.concat([prec ? BRN : GOLD]).forEach((c, i) => {
+      const f = i < n ? 0.22 + i * (n === 4 ? 0.12 : 0.15) : 0.82;
+      const q = e1.clone().addScaledVector(dir, L * f), w = n === 4 ? 0.26 : 0.32;
+      seg(q.clone().addScaledVector(dir, -w), q.clone().addScaledVector(dir, w), R + (i < n ? 0.04 : 0.14), bandMat[c]);
     });
   } else {                                                // cathode band near pad 1
-    const w = kind === "Z" ? 0.3 : 0.45, q = e1.clone().addScaledVector(dir, kind === "Z" ? 0.7 : 0.9);
+    const w = kind === "Z" ? 0.3 : kind === "B" ? 0.8 : 0.45, q = e1.clone().addScaledVector(dir, kind === "Z" ? 0.7 : kind === "B" ? 1.6 : 0.9);
     seg(q.clone().addScaledVector(dir, -w), q.clone().addScaledVector(dir, w), R + 0.04, kind === "Z" ? M.dark : M.silver);
   }
 }
@@ -637,14 +682,19 @@ function to220(p) {
   const plate = new THREE.Mesh(new THREE.PlaneGeometry(9.0, 4.5), new THREE.MeshStandardMaterial({ map: txt, roughness: 0.5 }));
   plate.position.copy(V(xc, y + s * 2.11, 8.2)); if (s < 0) plate.rotation.y = Math.PI; add(plate);
 }
+function flatPlate(w, h, tex, x, y, z, rotDeg) {           // a label lying on top of a part, turned with the footprint
+  const g = new THREE.Group(); g.position.copy(V(x, y, z)); g.rotation.y = rotDeg * Math.PI / 180;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5 }));
+  m.rotation.x = -Math.PI / 2; g.add(m); scene.add(g); return g;
+}
 function dip4(p) {
-  const P = pads(p), q = ["1", "2", "3", "4"].map(k => P[k]), xc = (q[0][1] + q[3][1]) / 2, yc = (q[0][2] + q[1][2]) / 2;
+  const P = pads(p), q = ["1", "2", "3", "4"].map(k => P[k]);
+  const xc = (q[0][1] + q[3][1]) / 2, yc = (q[0][2] + q[1][2]) / 2;
   q.forEach(a => { lead(a[1], a[2], 2.2, 0.28); box(V(a[1] + (a[1] < xc ? 0.45 : -0.45), a[2], 2.2), [1.1, 0.3, 0.5], M.lead); });
   box(V(xc, yc, 2.25), [6.4, 3.5, 4.6], M.plastic);
   const txt = canvasTex(256, 184, (g, w, h) => { g.fillStyle = "#2a2a2d"; g.fillRect(0, 0, w, h); g.fillStyle = "#9aa0a6"; g.beginPath(); g.arc(32, 32, 12, 0, 7); g.fill();
     g.fillStyle = "#e3e6e9"; g.textAlign = "center"; g.font = "700 46px monospace"; g.fillText("PC817", w / 2, 108); g.font = "28px monospace"; g.fillText(p.ref, w / 2, 152); });
-  const plate = new THREE.Mesh(new THREE.PlaneGeometry(6.3, 4.5), new THREE.MeshStandardMaterial({ map: txt, roughness: 0.5 }));
-  plate.rotation.x = -Math.PI / 2; plate.position.copy(V(xc, yc, 4.02)); add(plate);
+  flatPlate(6.3, 4.5, txt, xc, yc, 4.02, p.rot);
 }
 function led(p) {
   const P = pads(p), k = P["1"], a = P["2"], h = 2.8; lead(k[1], k[2], h); lead(a[1], a[2], h);
@@ -653,13 +703,15 @@ function led(p) {
   const d = new THREE.Mesh(new THREE.SphereGeometry(1.5, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), M.led); d.position.set(c.x, h + 4.0, c.z); add(d);
 }
 function ecap(p) {
-  const P = pads(p), a = P["1"], b = P["2"]; lead(a[1], a[2], 0.4); lead(b[1], b[2], 0.4);
-  const c = V((a[1] + b[1]) / 2, (a[2] + b[2]) / 2), h0 = 0.4, h1 = 16.4;
-  cyl(new THREE.Vector3(c.x, (h0 + h1) / 2, c.z), 5, h1 - h0, M.capSleeve, scene, 48);
-  const st = add(new THREE.Mesh(new THREE.CylinderGeometry(5.02, 5.02, h1 - h0 - 0.3, 48, 1, true, Math.PI / 2 - 0.6, 1.2), M.capStripe));
-  st.position.set(c.x, (h0 + h1) / 2, c.z);                                           // stripe on the minus (pad 2) side
-  cyl(new THREE.Vector3(c.x, h1 + 0.05, c.z), 4.55, 0.2, M.silver, scene, 48);
-  box(new THREE.Vector3(c.x, h1 + 0.18, c.z), [6, 0.08, 0.35], M.dark); box(new THREE.Vector3(c.x, h1 + 0.18, c.z), [0.35, 0.08, 6], M.dark);
+  const P = pads(p), a = P["1"], b = P["2"], big = /D10/.test(p.fp), r = big ? 5 : 2.5, h0 = 0.4, h1 = big ? 16.4 : 11.4;
+  lead(a[1], a[2], 0.4); lead(b[1], b[2], 0.4);
+  const c = V((a[1] + b[1]) / 2, (a[2] + b[2]) / 2);
+  cyl(new THREE.Vector3(c.x, (h0 + h1) / 2, c.z), r, h1 - h0, M.capSleeve, scene, 48);
+  const ang = Math.atan2(-(b[2] - a[2]), b[1] - a[1]);                                 // stripe toward the minus pad
+  const st = add(new THREE.Mesh(new THREE.CylinderGeometry(r + 0.02, r + 0.02, h1 - h0 - 0.3, 48, 1, true, ang + Math.PI / 2 - 0.6, 1.2), M.capStripe));
+  st.position.set(c.x, (h0 + h1) / 2, c.z);
+  cyl(new THREE.Vector3(c.x, h1 + 0.05, c.z), r - 0.45, 0.2, M.silver, scene, 48);
+  box(new THREE.Vector3(c.x, h1 + 0.18, c.z), [r * 1.2, 0.08, 0.3], M.dark); box(new THREE.Vector3(c.x, h1 + 0.18, c.z), [0.3, 0.08, r * 1.2], M.dark);
 }
 function cdisc(p) {
   const P = pads(p), a = P["1"], b = P["2"]; lead(a[1], a[2], 2.6); lead(b[1], b[2], 2.6);
@@ -671,50 +723,85 @@ function cdisc(p) {
 }
 function ptc(p) {
   const P = pads(p), a = P["1"], b = P["2"]; lead(a[1], a[2], 2.0); lead(b[1], b[2], 2.0);
-  const c = V((a[1] + b[1]) / 2, (a[2] + b[2]) / 2);
-  box(new THREE.Vector3(c.x, 2.0 + 6.6, c.z), [2.8, 12.6, 10.6], M.ptc);
-  const txt = canvasTex(256, 300, (g, w, h) => { g.fillStyle = "#f0b33c"; g.fillRect(0, 0, w, h); g.fillStyle = "#3a2a00"; g.textAlign = "center";
-    g.font = "700 44px monospace"; g.fillText("RUEF", w / 2, 130); g.fillText("300", w / 2, 185); });
-  const plate = new THREE.Mesh(new THREE.PlaneGeometry(10.2, 12.0), new THREE.MeshStandardMaterial({ map: txt, roughness: 0.5 }));
-  plate.rotation.y = -Math.PI / 2; plate.position.set(c.x - 1.41, 8.6, c.z); add(plate);
+  const c = V((a[1] + b[1]) / 2, (a[2] + b[2]) / 2), ang = Math.atan2(-(b[2] - a[2]), b[1] - a[1]);
+  const g = new THREE.Group(); g.position.set(c.x, 0, c.z); g.rotation.y = ang; scene.add(g);
+  box(new THREE.Vector3(0, 8.6, 0), [10.6, 12.6, 2.8], M.ptc, g);                   // wide side along the leads
+  const txt = canvasTex(300, 256, (q, w, h) => { q.fillStyle = "#f0b33c"; q.fillRect(0, 0, w, h); q.fillStyle = "#3a2a00"; q.textAlign = "center";
+    q.font = "700 52px monospace"; q.fillText("RUEF", w / 2, 115); q.fillText("300", w / 2, 175); });
+  [1, -1].forEach(sd => { const pl = new THREE.Mesh(new THREE.PlaneGeometry(10.0, 12.0), new THREE.MeshStandardMaterial({ map: txt, roughness: 0.5 }));
+    pl.position.set(0, 8.6, sd * 1.41); if (sd < 0) pl.rotation.y = Math.PI; add(pl, g); });
+}
+function fuse5x20(p) {                                     // two Littelfuse 111 clips holding a 5x20 mm ceramic fuse
+  const cl = {}; p.pads.forEach(q => (cl[q[0]] = cl[q[0]] || []).push(q));
+  const ends = Object.values(cl).map(v => [(v[0][1] + v[1][1]) / 2, (v[0][2] + v[1][2]) / 2]);
+  const h = 6.2, zc = (ends[0][1] + ends[1][1]) / 2, xc = (ends[0][0] + ends[1][0]) / 2;
+  p.pads.forEach(q => { seg(V(q[1], q[2], -T - 1.3), V(q[1], q[2], 0.4), 0.45, M.lead); fillet(q[1], q[2], 1.0); });
+  ends.forEach(([x, y]) => {
+    box(V(x, y, 0.3), [6.2, 0.5, 2.4], M.silver);
+    [-1, 1].forEach(sd => box(V(x, y + sd * 2.75, h / 2 + 0.2), [5.6, h + 0.6, 0.4], M.silver));
+  });
+  const tube = cyl(V(xc, zc, h), 2.55, 20.0 - 2 * 5.2, M.fuseBody); tube.rotation.z = Math.PI / 2;
+  [-1, 1].forEach(sd => { const cap = cyl(V(xc + sd * 7.4, zc, h), 2.65, 5.2, M.silver); cap.rotation.z = Math.PI / 2; });
+}
+function to92(p) {
+  const P = pads(p), a = P["1"], c3 = P["3"], xc = (a[1] + c3[1]) / 2, yc = a[2], h0 = 3.0, hb = 4.6;
+  ["1", "2", "3"].forEach(k => { const q = P[k]; seg(V(q[1], q[2], -T - 1.3), V(q[1], q[2], h0), 0.25, M.lead, scene); fillet(q[1], q[2], 0.9);
+    seg(V(q[1], q[2], h0), V((q[1] + 2 * P["2"][1]) / 3, yc, h0 + 0.6), 0.25, M.lead); });
+  const half = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.4, hb, 32, 1, false, Math.PI / 2, Math.PI), M.plastic);
+  half.position.copy(V(xc, yc + 0.6, h0 + 0.6 + hb / 2)); add(half);                  // round side toward -y, flat face toward +y
+  const txt = canvasTex(256, 200, (g, w, h) => { g.fillStyle = "#232325"; g.fillRect(0, 0, w, h); g.fillStyle = "#d6d9dc"; g.textAlign = "center";
+    g.font = "700 40px monospace"; g.fillText("LP2950", w / 2, 80); g.fillText("-3.3", w / 2, 128); g.font = "28px monospace"; g.fillText(p.ref, w / 2, 176); });
+  const plate = new THREE.Mesh(new THREE.PlaneGeometry(4.6, 4.4), new THREE.MeshStandardMaterial({ map: txt, roughness: 0.5 }));
+  plate.position.copy(V(xc, yc + 0.61, h0 + 0.6 + hb / 2)); add(plate);
 }
 function terminal(p) {
   const P = pads(p), a = P["1"], b = P["2"], vert = Math.abs(a[1] - b[1]) < 0.01, xc = (a[1] + b[1]) / 2, yc = (a[2] + b[2]) / 2;
+  const s = vert ? (xc > BW / 2 ? 1 : -1) : (yc > BH / 2 ? 1 : -1);                 // wire entry faces the nearest board edge
   [a, b].forEach(q => {
     seg(V(q[1], q[2], -T - 1.3), V(q[1], q[2], 0.5), 0.5, M.lead); fillet(q[1], q[2], 1.4);
     cyl(V(q[1], q[2], 10.15), 1.9, 0.5, M.metal); box(V(q[1], q[2], 10.45), vert ? [3.2, 0.3, 0.55] : [0.55, 0.3, 3.2], M.dark);
-    box(vert ? V(xc + 4.01, q[2], 4.3) : V(q[1], yc + 4.01, 4.3), vert ? [0.1, 3.6, 3.8] : [3.8, 3.6, 0.1], M.termDark);   // wire entry faces the board edge
+    box(vert ? V(xc + s * 4.01, q[2], 4.3) : V(q[1], yc + s * 4.01, 4.3), vert ? [0.1, 3.6, 3.8] : [3.8, 3.6, 0.1], M.termDark);
   });
   box(V(xc, yc, 5), vert ? [8.0, 10, 10.16] : [10.16, 10, 8.0], M.term);
 }
 function xt60(p) {
-  const P = pads(p), m = P["1"], pl = P["2"];
+  const P = pads(p), m = P["1"], pl = P["2"], pegs = p.pads.filter(q => !q[0]);
   [m, pl].forEach(q => { seg(V(q[1], q[2], -T - 1.5), V(q[1], q[2], 1.0), 1.2, M.gold); fillet(q[1], q[2], 2.1); });
-  p.pads.filter(q => !q[0]).forEach(q => box(V(q[1], q[2], 0.2), [1.9, 0.6, 0.8], M.metal));
-  const zc = (m[2] + pl[2]) / 2;
-  box(V(7.6, zc, 4.05), [15.8, 8.1, 16.0], M.xt60);                        // housing, mating face at the board edge
-  box(V(17.4, zc, 3.4), [3.6, 6.8, 15.2], M.xt60);                         // rear block over the pins
+  pegs.forEach(q => box(V(q[1], q[2], 0.2), [1.9, 0.6, 0.8], M.metal));
+  // local frame: +x from the pins toward the mating face (the side the pegs are on), +z along the pin row
+  const px = (m[1] + pl[1]) / 2, py = (m[2] + pl[2]) / 2;
+  const ex = (pegs[0][1] + pegs[1][1]) / 2 - px, ey = (pegs[0][2] + pegs[1][2]) / 2 - py;   // the pegs sit toward the mating face
+  const ux = Math.abs(ex) > Math.abs(ey) ? [Math.sign(ex), 0] : [0, Math.sign(ey)];
+  const g = new THREE.Group(); g.position.copy(V(px, py, 0)); g.rotation.y = Math.atan2(-ux[1], ux[0]); scene.add(g);
+  const L = (dx, h, dz) => new THREE.Vector3(dx, h, dz);
+  box(L(9.0, 4.05, 0), [15.8, 8.1, 16.0], M.xt60, g);                     // housing, mating face at the board edge
+  box(L(-0.8, 3.4, 0), [3.6, 6.8, 15.2], M.xt60, g);                       // rear block over the pins
+  const zl = q => { const dx = q[1] - px, dy = q[2] - py; return ux[0] ? dy * ux[0] : -dx * ux[1]; };   // pin position along local z
   [m, pl].forEach(q => {
-    const r = cyl(V(-0.15, q[2], 4.05), 2.6, 0.5, M.dark); r.rotation.z = Math.PI / 2;
-    const pin = cyl(V(0.2, q[2], 4.05), 1.75, 1.0, M.gold); pin.rotation.z = Math.PI / 2;
+    const r = cyl(L(17.05, 4.05, zl(q)), 2.6, 0.5, M.dark, g); r.rotation.z = Math.PI / 2;
+    const pin = cyl(L(16.7, 4.05, zl(q)), 1.75, 1.0, M.gold, g); pin.rotation.z = Math.PI / 2;
   });
-  const lab = canvasTex(256, 256, (g, w, h) => { g.fillStyle = "#f2c400"; g.fillRect(0, 0, w, h); g.fillStyle = "#5b4a00"; g.textAlign = "center";
-    g.font = "900 120px Arial, sans-serif"; g.fillText("+", 64, 165); g.fillRect(181, 88, 22, 84); });
+  const plusLeft = zl(pl) < 0;                                                // label: + on the + pin's side
+  const lab = canvasTex(256, 256, (q, w, h) => { q.fillStyle = "#f2c400"; q.fillRect(0, 0, w, h); q.fillStyle = "#5b4a00"; q.textAlign = "center";
+    q.font = "900 120px Arial, sans-serif"; const xp = plusLeft ? 64 : 192, xm = plusLeft ? 192 : 64; q.fillText("+", xp, 165); q.fillRect(xm - 11, 88, 22, 84); });
   const pl2 = new THREE.Mesh(new THREE.PlaneGeometry(14, 7), new THREE.MeshStandardMaterial({ map: lab, roughness: 0.5 }));
-  pl2.rotation.x = -Math.PI / 2; pl2.rotation.z = -Math.PI / 2; pl2.position.copy(V(7.6, zc, 8.12)); add(pl2);
+  pl2.rotation.x = -Math.PI / 2; pl2.rotation.z = -Math.PI / 2; pl2.position.copy(L(9.0, 8.12, 0)); add(pl2, g);
+}
+function socket(pins, g, hs = 8.5) {                       // a row of female header pins, along x
+  const xs = pins.map(q => q[1]), y = pins[0][2], x0 = Math.min(...xs), x1 = Math.max(...xs);
+  box(V((x0 + x1) / 2, y, hs / 2), [x1 - x0 + 2.54, hs, 2.54], M.plastic, g);
+  pins.forEach(q => { seg(V(q[1], y, -T - 1.3), V(q[1], y, 0.3), 0.32, M.lead, g); fillet(q[1], y, 1.0, g); });
+}
+function modulePins(pins, g, hm) {
+  const y = pins[0][2], xs = pins.map(q => q[1]);
+  box(V((Math.min(...xs) + Math.max(...xs)) / 2, y, hm - 1.25), [xs.length * 2.54, 2.5, 2.54], M.black, g);
+  pins.forEach(q => box(V(q[1], y, hm + 1.6), [0.64, 1.8, 0.64], M.gold, g));
 }
 function esp() {
-  const g = groups.esp, hs = 8.5, hm = 11.0;
-  [21.0, 36.24].forEach(row => {
-    box(V(11.43, row, hs / 2), [20.32, hs, 2.54], M.plastic, g);
-    box(V(11.43, row, hs + 1.25), [20.32, 2.5, 2.54], M.black, g);
-    for (let i = 0; i < 8; i++) {
-      const x = 2.54 + 2.54 * i;
-      seg(V(x, row, -T - 1.3), V(x, row, 0.3), 0.32, M.lead, g); fillet(x, row, 1.0, g);
-      box(V(x, row, hm + 1.6), [0.64, 1.8, 0.64], M.gold, g);
-    }
-  });
-  const yc = 28.62;
+  const g = groups.esp, hm = 11.0;
+  const A = PARTS.find(q => q.ref === "U1A").pads, B = PARTS.find(q => q.ref === "U1B").pads;
+  socket(A, g); socket(B, g); modulePins(A, g, hm); modulePins(B, g, hm);
+  const yc = (A[0][2] + B[0][2]) / 2;
   box(V(11.2, yc, hm + 0.5), [22.5, 1.0, 18.0], M.espPcb, g);
   const topTex = canvasTex(900, 720, (c, w, h) => {
     c.fillStyle = "#1b3c74"; c.fillRect(0, 0, w, h); c.fillStyle = "#e9eef7"; c.textAlign = "center";
@@ -731,6 +818,22 @@ function esp() {
   box(V(20.6, yc + 4.5, hm + 1.5), [1.6, 1.0, 3.2], M.black, g);          // ceramic antenna
   [[8.0, yc - 4.2], [8.0, yc + 4.2]].forEach(([x, y]) => box(V(x, y, hm + 1.3), [2.2, 0.6, 1.5], M.silver, g)); // BOOT / RST
 }
+function ads(p) {                                          // GY-ADS1115 module on a 1x10 socket; the board reaches back over the low parts
+  const g = groups.esp, hm = 11.0, pins = p.pads, y = pins[0][2];
+  socket(pins, g); modulePins(pins, g, hm);
+  const x0 = 49.5, x1 = 78.0, y0 = 68.5, y1 = y + 2.1, xc = (x0 + x1) / 2, yc = (y0 + y1) / 2;    // F.Fab outline from build_v4.py
+  box(V(xc, yc, hm + 0.5), [x1 - x0, 1.0, y1 - y0], M.adsPcb, g);
+  const tex = canvasTex(1140, 760, (c, w, h) => {
+    c.fillStyle = "#3a2b74"; c.fillRect(0, 0, w, h); c.fillStyle = "#ece8f7"; c.textAlign = "center";
+    c.font = "700 64px monospace"; c.fillText("ADS1115", w / 2, 250); c.font = "600 36px monospace"; c.fillText("16-bit ADC · U9", w / 2, 310);
+    c.font = "600 26px monospace";
+    ["VDD", "GND", "SCL", "SDA", "ADDR", "ALRT", "A0", "A1", "A2", "A3"].forEach((s, i) => c.fillText(s, (pins[i][1] - x0) / (x1 - x0) * w, h - 110));
+  });
+  const plate = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, y1 - y0), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6 }));
+  plate.rotation.x = -Math.PI / 2; plate.position.copy(V(xc, yc, hm + 1.01)); add(plate, g);
+  box(V(xc + 3, yc - 1.5, hm + 1.35), [3.0, 0.8, 3.0], M.black, g);       // the ADS1115 itself
+  [[xc - 6, yc - 4], [xc - 3, yc - 4], [xc + 9, yc - 4]].forEach(([x, z]) => box(V(x, z, hm + 1.2), [1.6, 0.5, 0.8], M.cer, g));
+}
 
 for (const p of PARTS) {
   const f = p.fp;
@@ -738,20 +841,24 @@ for (const p of PARTS) {
   else if (f.startsWith("D_DO-41")) axial(p, "D");
   else if (f.startsWith("D_DO-15")) axial(p, "T");
   else if (f.startsWith("D_DO-35")) axial(p, "Z");
+  else if (f.startsWith("D_DO-201")) axial(p, "B");
   else if (f.startsWith("TO-220")) to220(p);
+  else if (f.startsWith("TO-92")) to92(p);
   else if (f.startsWith("DIP-4")) dip4(p);
   else if (f.startsWith("LED_")) led(p);
   else if (f.startsWith("CP_Radial")) ecap(p);
   else if (f.startsWith("C_Disc")) cdisc(p);
   else if (f.startsWith("PTC")) ptc(p);
+  else if (f.startsWith("Fuseholder")) fuse5x20(p);
   else if (f.startsWith("TerminalBlock")) terminal(p);
   else if (f.startsWith("AMASS_XT60")) xt60(p);
+  else if (f.startsWith("PinSocket_1x10")) ads(p);
 }
 esp();
 
 // ---------------------------------------------------------------- views + render loop
 let needRender = true;
-const VIEWS = { iso: [-70, 96, 100], top: [0, 158, 0.01], bottom: [0, -158, -0.01], side: [0, 30, 150] };
+const VIEWS = { iso: [-86, 118, 124], top: [0, 196, 0.01], bottom: [0, -196, -0.01], side: [0, 36, 186] };
 function setView(k) {
   const p = VIEWS[k]; camera.position.set(p[0], p[1], p[2]); controls.target.set(0, k === "bottom" ? -1 : 2, 0); controls.update(); needRender = true;
   ["iso", "top", "bottom", "side"].forEach(n => document.getElementById("v-" + n).setAttribute("aria-pressed", String(n === k)));
@@ -770,5 +877,3 @@ document.getElementById("msg").remove();
 window.__ready = true;
 })();
 </script>
-
-</body></html>

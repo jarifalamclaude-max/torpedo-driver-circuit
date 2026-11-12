@@ -1,0 +1,64 @@
+ref,value,footprint
+C1,"470uF 35V",CP_Radial_D10.0mm_P5.00mm
+C3,"100nF",C_Disc_D5.0mm_W2.5mm_P5.00mm
+C4,"100nF",C_Disc_D5.0mm_W2.5mm_P5.00mm
+C5,"100nF",C_Disc_D5.0mm_W2.5mm_P5.00mm
+C6,"100nF",C_Disc_D5.0mm_W2.5mm_P5.00mm
+C7,"100nF",C_Disc_D5.0mm_W2.5mm_P5.00mm
+C8,"10uF 35V",CP_Radial_D5.0mm_P2.00mm
+C9,"10uF 35V",CP_Radial_D5.0mm_P2.00mm
+C11,"100nF",C_Disc_D5.0mm_W2.5mm_P5.00mm
+D1,"UF5408",D_DO-201AD_P12.70mm_Horizontal
+D2,"UF5408",D_DO-201AD_P12.70mm_Horizontal
+D3,"1N5819",D_DO-41_SOD81_P7.62mm_Horizontal
+D4,"P6KE22A",D_DO-15_P10.16mm_Horizontal
+D5,"12V zener",D_DO-35_SOD27_P7.62mm_Horizontal
+D6,"15V zener",D_DO-35_SOD27_P7.62mm_Horizontal
+D7,"20V zener",D_DO-35_SOD27_P7.62mm_Horizontal
+F1,"RUEF300 PTC 3A 30V",None
+F2,"5A fast 5x20 ceramic",Fuseholder_Clip-5x20mm_Littelfuse_111_Inline_P20.00x5.00mm_D1.05mm_Horizontal
+J1,"XT60PW-M",AMASS_XT60PW-M_1x02_P7.20mm_Horizontal
+J2,"SOL1",TerminalBlock_bornier-2_P5.08mm
+J3,"SOL2",TerminalBlock_bornier-2_P5.08mm
+J4,"LOGIC 5V IN",TerminalBlock_bornier-2_P5.08mm
+LED1,"red 3mm",LED_D3.0mm
+LED2,"red 3mm",LED_D3.0mm
+Q1,"IRLZ44N",TO-220-3_Vertical
+Q2,"IRLZ44N",TO-220-3_Vertical
+Q3,"IRF4905",TO-220-3_Vertical
+R1,"150",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R2,"150",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R3,"4.7k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R4,"4.7k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R5,"200k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R6,"20k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R7,"10k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R8,"10k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R9,"680",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R10,"200k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R11,"20k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R12,"68k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R13,"4.7k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R14,"1k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R15,"150",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R16,"220",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R17,"220",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R18,"1k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R19,"6.8k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R20,"10k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R21,"10k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R22,"200k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R23,"20k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R24,"200k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R25,"20k 1%",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+R26,"1k",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal
+U1A,"SuperMini 5V..IO0",PinSocket_1x08_P2.54mm_Vertical
+U1B,"SuperMini IO5..IO21",PinSocket_1x08_P2.54mm_Vertical
+U2,"PC817",DIP-4_W7.62mm
+U3,"PC817",DIP-4_W7.62mm
+U4,"PC817",DIP-4_W7.62mm
+U5,"PC817",DIP-4_W7.62mm
+U6,"PC817",DIP-4_W7.62mm
+U7,"PC817",DIP-4_W7.62mm
+U8,"LP2950-3.3",TO-92_Inline_Wide
+U9,"ADS1115 module (GY-ADS1115)",PinSocket_1x10_P2.54mm_Vertical
