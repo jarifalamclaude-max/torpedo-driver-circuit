@@ -1,16 +1,17 @@
-"""Add the BRACU Duburi logo and designer name to the silkscreen of torpedo_driver_v3.kicad_pcb.
-Blue parts of the logo become silkscreen ink. Run with KiCad 7's python:  python3 add_branding.py"""
+"""Add the BRACU Duburi logo and designer name to the silkscreen of torpedo_driver_v4.kicad_pcb, then re-run DRC
+so drc.rpt matches the final board. Blue parts of the logo become silkscreen ink.
+Run after route_v4.py, with KiCad 7's python:  python3 add_branding.py"""
 import os, pcbnew
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PCB = os.path.join(HERE, "torpedo_driver_v3.kicad_pcb")
+PCB = os.path.join(HERE, "torpedo_driver_v4.kicad_pcb")
 OX, OY = 100.0, 100.0
 mm = pcbnew.FromMM
 NAME = "Md. Jarif Alam 13"
-FRONT = (26.75, 42.6, 13.4)       # x, y of top-left corner (board mm), width
-BACK = (1.5, 22.55, 22.0)        # as seen from the top; drawn mirrored so it reads from the back
-NAME_AT = (42.5, 50.0)
+FRONT = (8.3, 42.6, 13.4)         # x, y of top-left corner (board mm), width: empty logic-side area
+BACK = (1.5, 27.6, 20.0)          # between the ESP32 header rows, as seen from the top; drawn mirrored
+NAME_AT = (13.0, 56.0)
 
 def logo_runs(width_mm, px_per_mm):
     im = Image.open(os.path.join(HERE, "duburi_logo.png")).convert("RGB")
@@ -57,4 +58,7 @@ t.SetTextSize(pcbnew.VECTOR2I(mm(1.0), mm(1.0))); t.SetTextThickness(mm(0.15)); 
 bb = t.GetBoundingBox()
 print("name box mm:", [round(pcbnew.ToMM(v) - 100, 2) for v in (bb.GetX(), bb.GetY(), bb.GetX() + bb.GetWidth(), bb.GetY() + bb.GetHeight())])
 print("logo heights mm:", round(h1, 2), round(h2, 2))
+pcbnew.ZONE_FILLER(board).Fill(board.Zones())
 pcbnew.SaveBoard(PCB, board)
+board = pcbnew.LoadBoard(PCB)
+print("DRC written:", pcbnew.WriteDRCReport(board, os.path.join(HERE, "drc.rpt"), pcbnew.EDA_UNITS_MILLIMETRES, True))

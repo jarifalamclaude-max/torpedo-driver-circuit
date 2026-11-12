@@ -1,11 +1,15 @@
-"""Generate torpedo_driver_v3_sim.kicad_sch: a simulation-ready KiCad schematic of the torpedo driver.
-Connectors and the ESP32 are replaced by sources and loads so the built-in simulator can run it.
+"""Generate torpedo_driver_v4_sim.kicad_sch: a simulation-ready KiCad schematic of the v4 driver.
+Connectors and the ESP32 are replaced by sources and loads so KiCad's built-in simulator can run it.
+The logic side sits on its own ground net GNDL, tied to GND only by 1 Gohm and 10 pF (the isolation barrier).
+The models (MOSFETs fitted to the IR datasheets, electromechanical solenoid) are written on the sheet,
+copied from ../kicad/simulation/models.lib.
 Run:  python3 make_sim_schematic.py   (needs the KiCad symbol libraries installed)"""
 import re, uuid, math, os
 
 SYMDIR = "/usr/share/kicad/symbols"
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "torpedo_driver_v3_sim.kicad_sch")
-PROJECT = "torpedo_driver_v3_sim"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(HERE, "torpedo_driver_v4_sim.kicad_sch")
+PROJECT = "torpedo_driver_v4_sim"
 
 def block(text, start):
     d = 0
@@ -74,38 +78,45 @@ C = lambda ref, val, a, b: ("C", ref, val, {1: a, 2: b})
 DIO = lambda ref, val, model, k, a, sym="D": (sym, ref, val, {1: k, 2: a}, ("X", model))
 V = lambda ref, val, spec, p, n: ("V", ref, val, {1: p, 2: n}, ("V", spec))
 
+ARM = "PWL(0 0 20m 0 20.001m 3.3 330m 3.3 330.001m 0)"
+FIRE = "PWL(0 0 30m 0 30.001m 3.3 230m 3.3 230.001m 0)"
+X = lambda ref, val, model, nets, sym: (sym, ref, val, nets, ("X", model))
 ROWS = [
- ("POWER INPUT  (battery, fuse, bulk cap, TVS, battery sense)", [
-   V("V1", "4S LiPo 16.8V", "DC 16.8", "BAT", "GND"), R("R20", "0.03", "BAT", "NB1"), ("L", "L3", "0.5u", {1: "NB1", 2: "VBAT_IN"}),
-   R("R19", "0.03", "VBAT_IN", "VBAT"), C("C1", "470u", "VBAT", "GND"), DIO("D4", "P6KE20A", "DTVS", "VBAT", "GND", "D_Zener"),
-   R("R5", "22k", "VBAT", "VSENSE"), R("R6", "2.2k", "VSENSE", "GND"), C("C3", "100n", "VSENSE", "GND")]),
- ("ARM SWITCH  (GPIO10 -> U4 -> Q3)", [
-   V("V2", "GPIO10 ARM", "PWL(0 0 20m 0 20.001m 3.3 310m 3.3 310.001m 0)", "GP10", "GND"), R("R23", "40", "GP10", "ARM"),
-   R("R15", "220", "ARM", "OL3"), ("OPTO", "U4", "PC817", {1: "OL3", 2: "GND", 3: "GND", 4: "G3D"}, ("X", "PC817")),
-   R("R14", "2.2k", "G3", "G3D"), R("R13", "4.7k", "VBAT", "G3"),
-   ("PMOS", "Q3", "IRF4905", {1: "G3", 2: "VSW", 3: "VBAT"}, ("X", "IRF4905")), R("R12", "15k", "VBAT", "VSW")]),
- ("12 V GATE SUPPLY  and  ARMED-RAIL SENSE", [
-   R("R9", "1k", "VSW", "VG"), DIO("D5", "12V zener", "DZ12", "VG", "GND", "D_Zener"), C("C4", "100n", "VG", "GND"),
-   R("R10", "22k", "VSW", "SWSENSE"), R("R11", "2.2k", "SWSENSE", "GND"), C("C5", "100n", "SWSENSE", "GND")]),
- ("CHANNEL 1  (GPIO1 -> U2 -> Q1 -> solenoid 1)", [
-   V("V3", "GPIO1 FIRE1", "PWL(0 0 30m 0 30.001m 3.3 280m 3.3 280.001m 0)", "GP1", "GND"), R("R21", "40", "GP1", "FIRE1"),
-   R("R1", "220", "FIRE1", "OL1"), ("OPTO", "U2", "PC817", {1: "OL1", 2: "GND", 3: "G1", 4: "VG"}, ("X", "PC817")),
-   R("R3", "4.7k", "G1", "GND"), ("NMOS", "Q1", "IRLZ44N", {1: "G1", 2: "D1N", 3: "GND"}, ("X", "IRLZ44N")),
-   ("L", "L1", "30m", {1: "VSW", 2: "SOL1M"}), R("R31", "15", "SOL1M", "D1N"),
-   DIO("D1", "1N5819", "D1N5819", "VSW", "D1N"), R("R7", "3.3k", "VSW", "LED1A"), DIO("LED1", "red", "DLED", "D1N", "LED1A", "LED")]),
+ ("POWER INPUT  (battery, F2 fast fuse, F1 PTC, bulk cap, TVS, battery divider 1/11)", [
+   V("V1", "4S LiPo 16.8V", "DC 16.8", "BAT", "GND"), R("R30", "0.03", "BAT", "NB1"), ("L", "L3", "0.5u", {1: "NB1", 2: "VBAT_IN"}),
+   R("R31", "0.02", "VBAT_IN", "VFUSE"), R("R32", "0.03", "VFUSE", "VBAT"), C("C1", "470u", "VBAT", "C1M"), R("R33", "0.08", "C1M", "GND"),
+   DIO("D4", "P6KE22A", "DTVS22_KA", "VBAT", "GND", "D_Zener"), R("R5", "200k", "VBAT", "SBAT"), R("R6", "20k", "SBAT", "GND"), C("C3", "100n", "SBAT", "GND")]),
+ ("ARM SWITCH  (GPIO10 on GNDL -> U4 -> Q3, C11 holds Q3 off at plug-in, D6 clamps Vgs at 15 V)", [
+   V("V2", "GPIO10 ARM", ARM, "GP10", "GNDL"), R("R40", "40", "GP10", "ARM"), R("R15", "150", "ARM", "OL3"),
+   X("U4", "PC817", "PC817_AKEC", {1: "OL3", 2: "GNDL", 3: "GND", 4: "G3D"}, "OPTO"),
+   R("R14", "1k", "G3", "G3D"), R("R13", "4.7k", "VBAT", "G3"), DIO("D6", "15V zener", "DZ15_KA", "VBAT", "G3", "D_Zener"),
+   C("C11", "100n", "VBAT", "G3"), X("Q3", "IRF4905", "IRF4905_GDS", {1: "G3", 2: "VSW", 3: "VBAT"}, "PMOS"), R("R12", "68k", "VBAT", "VSW")]),
+ ("12 V GATE RAIL  and  SWITCHED-RAIL SENSE 1/11", [
+   R("R9", "680", "VSW", "VG"), DIO("D5", "12V zener", "DZ12_KA", "VG", "GND", "D_Zener"), C("C4", "100n", "VG", "GND"),
+   R("R10", "200k", "VSW", "SSW"), R("R11", "20k", "SSW", "GND"), C("C5", "100n", "SSW", "GND")]),
+ ("CHANNEL 1  (GPIO1 -> U2 -> Q1 -> solenoid 1, gate LED, low-side sense 1/11)", [
+   V("V3", "GPIO1 FIRE1", FIRE, "GP1", "GNDL"), R("R41", "40", "GP1", "FIRE1"), R("R1", "150", "FIRE1", "OL1"),
+   X("U2", "PC817", "PC817_AKEC", {1: "OL1", 2: "GNDL", 3: "G1", 4: "VG"}, "OPTO"),
+   R("R3", "4.7k", "G1", "GND"), R("R7", "10k", "G1", "LED1A"), DIO("LED1", "red", "DLED_KA", "GND", "LED1A", "LED"),
+   X("Q1", "IRLZ44N", "IRLZ44N_GDS", {1: "G1", 2: "D1N", 3: "GND"}, "NMOS"),
+   X("SOL1", "solenoid", "SOLENOID", {1: "VSW", 2: "D1N"}, "L"), DIO("D1", "UF5408", "DUF5408_KA", "VSW", "D1N"),
+   R("R22", "200k", "D1N", "SD1"), R("R23", "20k", "SD1", "GND"), C("C6", "100n", "SD1", "GND")]),
  ("CHANNEL 2  (GPIO0 -> U3 -> Q2 -> solenoid 2)", [
-   V("V4", "GPIO0 FIRE2", "DC 0", "GP0", "GND"), R("R22", "40", "GP0", "FIRE2"),
-   R("R2", "220", "FIRE2", "OL2"), ("OPTO", "U3", "PC817", {1: "OL2", 2: "GND", 3: "G2", 4: "VG"}, ("X", "PC817")),
-   R("R4", "4.7k", "G2", "GND"), ("NMOS", "Q2", "IRLZ44N", {1: "G2", 2: "D2N", 3: "GND"}, ("X", "IRLZ44N")),
-   ("L", "L2", "30m", {1: "VSW", 2: "SOL2M"}), R("R32", "15", "SOL2M", "D2N"),
-   DIO("D2", "1N5819", "D1N5819", "VSW", "D2N"), R("R8", "3.3k", "VSW", "LED2A"), DIO("LED2", "red", "DLED", "D2N", "LED2A", "LED")]),
- ("5 V INPUT  (buck -> D3 -> ESP32 5V pin; RESP stands in for the ESP32)", [
-   V("V5", "buck 5.1V", "DC 5.1", "BUCK", "GND"), R("R41", "0.1", "BUCK", "5V_IN"),
-   DIO("D3", "1N5819", "D1N5819", "+5V", "5V_IN"), R("R40", "82", "+5V", "GND")]),
+   V("V4", "GPIO0 FIRE2", "DC 0", "GP0", "GNDL"), R("R42", "40", "GP0", "FIRE2"), R("R2", "150", "FIRE2", "OL2"),
+   X("U3", "PC817", "PC817_AKEC", {1: "OL2", 2: "GNDL", 3: "G2", 4: "VG"}, "OPTO"),
+   R("R4", "4.7k", "G2", "GND"), R("R8", "10k", "G2", "LED2A"), DIO("LED2", "red", "DLED_KA", "GND", "LED2A", "LED"),
+   X("Q2", "IRLZ44N", "IRLZ44N_GDS", {1: "G2", 2: "D2N", 3: "GND"}, "NMOS"),
+   X("SOL2", "solenoid", "SOLENOID", {1: "VSW", 2: "D2N"}, "L"), DIO("D2", "UF5408", "DUF5408_KA", "VSW", "D2N"),
+   R("R24", "200k", "D2N", "SD2"), R("R25", "20k", "SD2", "GND"), C("C7", "100n", "SD2", "GND")]),
+ ("3.3 V ADC RAIL, LOGIC SUPPLY, ISOLATION BARRIER (R45 + C12 stand for the gap between GNDL and GND)", [
+   R("R26", "1k", "VBAT", "VPRE"), DIO("D7", "20V zener", "DZ20_KA", "VPRE", "GND", "D_Zener"), C("C8", "10u", "VPRE", "GND"),
+   X("U8", "LP2950-3.3", "LDO33", {1: "3V3P", 2: "GND", 3: "VPRE"}, "LDO"), C("C9", "10u", "3V3P", "GND"), R("R46", "16.5k", "3V3P", "GND"),
+   V("V5", "logic 5.1V", "DC 5.1", "5V_IN", "GNDL"), DIO("D3", "1N5819", "D1N5819_KA", "+5V", "5V_IN"), R("R44", "82", "+5V", "GNDL"),
+   R("R45", "1G", "GNDL", "GND"), C("C12", "10p", "GNDL", "GND")]),
 ]
 SYM = {"R": ("Device", "R"), "C": ("Device", "C"), "L": ("Device", "L"), "D": ("Device", "D"), "D_Zener": ("Device", "D_Zener"),
        "LED": ("Device", "LED"), "V": ("Simulation_SPICE", "VDC"), "OPTO": ("Isolator", "PC817"),
-       "NMOS": ("Device", "Q_NMOS_GDS"), "PMOS": ("Device", "Q_PMOS_GDS")}
+       "NMOS": ("Device", "Q_NMOS_GDS"), "PMOS": ("Device", "Q_PMOS_GDS"), "LDO": ("Regulator_Linear", "LP2950-3.3_TO92")}
 
 X0, Y0, DX, DY = 30.48, 40.64, 35.56, 38.1
 for r, (title, parts) in enumerate(ROWS):
@@ -114,51 +125,42 @@ for r, (title, parts) in enumerate(ROWS):
         kind, ref, val, nets = p[:4]; raw = p[4] if len(p) > 4 else None
         part(ref, *SYM[kind], val, X0 + c * DX, Y0 + r * DY, nets, raw)
 
-MODELS = """.subckt D1N5819 k a
-D1 a k MD1N5819
-.model MD1N5819 D(Is=31.7u Rs=0.051 N=1.373 Cjo=110p M=0.35 Eg=0.69 Xti=2 BV=40 IBV=1m)
+WRAP = """.subckt IRLZ44N_GDS g d s
+X1 d g s IRLZ44N
 .ends
-.subckt DTVS k a
-D1 a k MDTVS
-.model MDTVS D(Is=1e-12 Rs=0.3 N=1.5 BV=20 IBV=1m Cjo=500p)
+.subckt IRF4905_GDS g d s
+X1 d g s IRF4905
 .ends
-.subckt DZ12 k a
-D1 a k MDZ12
-.model MDZ12 D(Is=1e-14 Rs=8 N=1 BV=12 IBV=5m Cjo=50p)
+.subckt PC817_AKEC a k e c
+X1 a k c e PC817
 .ends
-.subckt DLED k a
-D1 a k MDLED
-.model MDLED D(Is=1e-19 N=1.6 Rs=5)
+.subckt DUF5408_KA k a
+D1 a k DUF5408
 .ends
-.model DBODY D(Is=1e-12 Rs=0.01 BV=55)
-.model NLZ44 NMOS(Level=1 Vto=1.5 Kp=10 Lambda=0.002 Rd=0.006 Rs=0.004)
-.model PF4905 PMOS(Level=1 Vto=-3 Kp=12 Lambda=0.002 Rd=0.005 Rs=0.003)
-.subckt IRLZ44N g d s
-M1 d g s s NLZ44
-Db s d DBODY
-Cgs g s 1.5n
-Cgd g d 0.2n
+.subckt D1N5819_KA k a
+D1 a k D1N5819
 .ends
-.subckt IRF4905 g d s
-M1 d g s s PF4905
-Db d s DBODY
-Cgs g s 3n
-Cgd g d 0.6n
+.subckt DTVS22_KA k a
+D1 a k DTVS22
 .ends
-.subckt PC817 a k e c
-Dled a m DOPTO
-Vs m k 0
-Fph c b Vs 0.005
-Qp c b e QOPTO
-Rbe b e 200meg
-.model DOPTO D(Is=8.4e-13 N=2 Rs=2 Cjo=30p)
-.model QOPTO NPN(Is=1e-14 Bf=200 Vaf=100 Cjc=15p Cje=10p Tf=5n)
+.subckt DZ12_KA k a
+D1 a k DZ12
+.ends
+.subckt DZ15_KA k a
+D1 a k DZ15
+.ends
+.subckt DZ20_KA k a
+D1 a k DZ20
+.ends
+.subckt DLED_KA k a
+D1 a k DLED
 .ends"""
-text(MODELS, 300.0, 250.0, 1.0)
-text(".tran 20u 400m", 300.0, 150.0, 1.778)
-text("Simplified models, same as simulation/normal.cir.\nTimeline: ARM on at 20 ms, FIRE1 on at 30 ms, FIRE1 off at 280 ms, ARM off at 310 ms.\nR19 = fuse F1, R20/L3 = battery and lead, L1+R31 = solenoid 1, L2+R32 = solenoid 2, R21..R23 = GPIO output resistance, R40 = ESP32 load.\nPlot: V(/VSW), V(/D1N), V(/G1), V(/G3), I(L1), V(/SWSENSE), V(/VSENSE)", 300.0, 140.0, 1.27)
+MODELS = WRAP + "\n" + "\n".join(l for l in open(os.path.join(HERE, "..", "kicad", "simulation", "models.lib")).read().splitlines() if l.strip())
+text(MODELS, 545.0, 20.0, 1.0)
+text(".tran 20u 400m", 20.0, 272.0, 1.778)
+text("Same circuit and models as ../kicad/simulation (generated from the v4 PCB).\nTimeline: ARM on at 20 ms, FIRE1 on at 30 ms, FIRE1 off at 230 ms, ARM off at 330 ms.\nR30/L3 = battery and lead, R31 = fuse F2, R32 = PTC F1, R33 = C1 ESR, R40..R42 = GPIO output resistance,\nR44 = ESP32 load, R46 = ADS1115 + pull-up load on 3V3P, R45/C12 = isolation barrier. SOL1/SOL2 = electromechanical solenoid.\nPlot: V(/VSW), V(/D1N), V(/G1), V(/G3), I(SOL1), V(/SD1), V(/SBAT), and the plunger position V(xsol1.x)", 20.0, 282.0, 1.27)
 
-doc = (f'(kicad_sch (version 20230121) (generator eeschema)\n (uuid {ROOT})\n (paper "A2")\n (lib_symbols\n  '
+doc = (f'(kicad_sch (version 20230121) (generator eeschema)\n (uuid {ROOT})\n (paper "A1")\n (lib_symbols\n  '
        + "\n  ".join(used.values()) + "\n )\n " + "\n ".join(items)
        + '\n (sheet_instances (path "/" (page "1")))\n)\n')
 open(OUT, "w").write(doc)

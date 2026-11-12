@@ -1,0 +1,5 @@
+(version 1)
+# Ground pads get full thermal spokes from the B.Cu plane; on the F.Cu pour one spoke is enough.
+(rule "gnd_top_spokes"
+   (layer "F.Cu")
+   (constraint min_resolved_spokes 1))
