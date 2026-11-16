@@ -8,7 +8,7 @@ import pcbnew
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, "..", "kicad", "torpedo_driver_v4.kicad_pcb")
 HTML = os.path.join(HERE, "index.html")
-OX = OY = 100.0
+OX, OY = 100.0, 50.0
 G = 2.54
 NUDGE = {"C3": (1, 0), "C5": (1, 0), "C6": (1, 0), "C7": (1, 0)}   # ref -> (dcol, drow) manual moves where snapping collides
 

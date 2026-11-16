@@ -14,7 +14,7 @@ import pcbnew
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, "torpedo_driver_v4.kicad_pcb")
-OX, OY, W, H = 100.0, 100.0, 100.0, 88.0
+OX, OY, W, H = 100.0, 50.0, 100.0, 88.0
 BX0, BX1 = 33.9, 40.1          # isolation channel kept free of copper (opto pads sit just outside it)
 mm = pcbnew.FromMM
 def P(x, y): return pcbnew.VECTOR2I(mm(OX + x), mm(OY + y))

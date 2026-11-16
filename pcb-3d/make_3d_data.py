@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, "..", "kicad", "torpedo_driver_v4.kicad_pcb")
 HTML = os.path.join(HERE, "index.html")
 W, H, PX = 100.0, 88.0, 27.5                   # board size (mm), pixels per mm
-OX = OY = 100.0
+OX, OY = 100.0, 50.0
 MASK, MASK_CU, SILK, PAD, FR4, HOLE = (29, 91, 50), (40, 112, 62), (236, 238, 238), (214, 216, 218), (196, 170, 110), (13, 13, 13)
 
 def render(layer, tmp):

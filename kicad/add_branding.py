@@ -6,7 +6,7 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, "torpedo_driver_v4.kicad_pcb")
-OX, OY = 100.0, 100.0
+OX, OY = 100.0, 50.0
 mm = pcbnew.FromMM
 NAME = "Md. Jarif Alam 13"
 FRONT = (8.3, 42.6, 13.4)         # x, y of top-left corner (board mm), width: empty logic-side area
